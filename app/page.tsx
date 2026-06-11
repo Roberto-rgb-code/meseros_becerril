@@ -171,13 +171,6 @@ function Navbar() {
 }
 
 function HeroSection() {
-  const navLinks = [
-    { href: "#servicios", label: "Servicios" },
-    { href: "#paquetes", label: "Paquetes" },
-    { href: "#testimonios", label: "Testimonios" },
-    { href: "#contacto", label: "Contacto" },
-  ];
-
   return (
     <section className="relative min-h-screen flex flex-col justify-end overflow-hidden">
       <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
@@ -188,14 +181,6 @@ function HeroSection() {
         <p className="text-xs md:text-sm tracking-[0.2em] uppercase text-[var(--muted)] mb-8 animate-fade-in-up">
           Servicio profesional de meseros en Ciudad de México
         </p>
-
-        <div className="hidden md:flex items-center gap-8 mb-12 animate-fade-in-up" style={{ animationDelay: "0.1s", animationFillMode: "forwards" }}>
-          {navLinks.map((link) => (
-            <a key={link.href} href={link.href} className="nav-link hover:!text-[var(--foreground)]">
-              {link.label}
-            </a>
-          ))}
-        </div>
 
         <div className="max-w-4xl">
           <span
