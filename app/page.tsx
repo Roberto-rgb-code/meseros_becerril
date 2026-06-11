@@ -1,12 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef, ReactNode } from "react";
-
-const CONTACT = {
-  name: "Vianey Becerril",
-  phone: "33-10-15-03-58",
-  whatsapp: "5213310150358",
-};
+import Link from "next/link";
+import { CONTACT } from "./constants";
 
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null);
@@ -430,6 +426,100 @@ function ServicesSection() {
   );
 }
 
+function AdditionalServicesSection() {
+  const ref = useReveal();
+
+  const services = [
+    {
+      title: "Parrillero",
+      description:
+        "Experto en parrilla para tus eventos al aire libre. Preparación de carnes, cortes especiales y servicio en vivo frente a tus invitados.",
+      features: ["Parrilla en vivo", "Carnes y cortes premium", "Atención en jardín o terraza"],
+      image:
+        "https://images.pexels.com/photos/1059907/pexels-photo-1059907.jpeg?auto=compress&cs=tinysrgb&w=800",
+      alt: "Parrillero preparando carne en evento",
+    },
+    {
+      title: "Bartender",
+      description:
+        "Servicio profesional de barra con bebidas clásicas y de autor. Atención ágil, presentación impecable y ambiente sofisticado para tu evento.",
+      features: ["Barra completa", "Bebidas clásicas y especiales", "Servicio dinámico"],
+      image:
+        "https://images.pexels.com/photos/2747448/pexels-photo-2747448.jpeg?auto=compress&cs=tinysrgb&w=800",
+      alt: "Bartender sirviendo bebidas en evento",
+    },
+    {
+      title: "Mixólogo",
+      description:
+        "Coctelería de autor y creaciones exclusivas para ocasiones especiales. Menús personalizados, ingredientes premium y show de mixología.",
+      features: ["Cocteles de autor", "Menú personalizado", "Experiencia premium"],
+      image:
+        "https://images.pexels.com/photos/1283219/pexels-photo-1283219.jpeg?auto=compress&cs=tinysrgb&w=800",
+      alt: "Mixólogo preparando cocteles",
+    },
+  ];
+
+  return (
+    <section id="servicios-adicionales" className="section-padding">
+      <div ref={ref} className="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+        <SectionHeader
+          number="03"
+          label="Servicios Adicionales"
+          title={
+            <>
+              Especialistas para tu <span className="text-gradient">Evento</span>
+            </>
+          }
+          description="Personal capacitado para complementar tu celebración con servicios premium"
+        />
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+          {services.map((service) => (
+            <article key={service.title} className="card-minimal group overflow-hidden flex flex-col">
+              <div className="relative aspect-[4/3] overflow-hidden">
+                <img
+                  src={service.image}
+                  alt={service.alt}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                <h3
+                  className="absolute bottom-4 left-4 right-4 text-xl sm:text-2xl text-white"
+                  style={{ fontFamily: "var(--font-playfair)" }}
+                >
+                  {service.title}
+                </h3>
+              </div>
+
+              <div className="p-6 sm:p-8 flex flex-col flex-grow">
+                <p className="text-sm text-[var(--muted)] leading-relaxed mb-6 flex-grow">
+                  {service.description}
+                </p>
+                <ul className="space-y-2 mb-6">
+                  {service.features.map((feature) => (
+                    <li key={feature} className="text-[10px] sm:text-xs tracking-wide text-[var(--muted)] uppercase">
+                      — {feature}
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  href={`https://wa.me/${CONTACT.whatsapp}?text=Hola,%20me%20interesa%20contratar%20${encodeURIComponent(service.title)}%20para%20mi%20evento`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-link text-xs"
+                >
+                  Cotizar {service.title}
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function PackagesSection() {
   const ref = useReveal();
 
@@ -476,7 +566,7 @@ function PackagesSection() {
     <section id="paquetes" className="section-padding">
       <div ref={ref} className="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <SectionHeader
-          number="03"
+          number="04"
           label="Paquetes"
           title={
             <>
@@ -605,7 +695,7 @@ function TestimonialsSection() {
     <section id="testimonios" className="section-padding bg-[var(--charcoal)]">
       <div ref={ref} className="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <SectionHeader
-          number="04"
+          number="05"
           label="Testimonios"
           title={
             <>
@@ -683,7 +773,7 @@ function GallerySection() {
     <section id="galeria" className="section-padding">
       <div ref={ref} className="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <SectionHeader
-          number="05"
+          number="06"
           label="Galería"
           title={
             <>
@@ -781,7 +871,7 @@ function ProcessSection() {
     <section id="proceso" className="section-padding bg-[var(--charcoal)]">
       <div ref={ref} className="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <SectionHeader
-          number="06"
+          number="07"
           label="Proceso"
           title={
             <>
@@ -834,7 +924,7 @@ function FAQSection() {
     <section className="section-padding">
       <div ref={ref} className="reveal max-w-3xl mx-auto px-4 sm:px-6 lg:px-10">
         <SectionHeader
-          number="07"
+          number="08"
           label="FAQ"
           title={
             <>
@@ -914,7 +1004,7 @@ function ContactSection() {
     <section id="contacto" className="section-padding bg-[var(--charcoal)] border-t border-[var(--border)]">
       <div ref={ref} className="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <SectionHeader
-          number="08"
+          number="09"
           label="Contacto"
           title={
             <>
@@ -1055,6 +1145,7 @@ function ContactSection() {
 function Footer() {
   const footerLinks = [
     { label: "Servicios", href: "#servicios" },
+    { label: "Servicios Adicionales", href: "#servicios-adicionales" },
     { label: "Paquetes", href: "#paquetes" },
     { label: "Testimonios", href: "#testimonios" },
     { label: "Proceso", href: "#proceso" },
@@ -1106,9 +1197,9 @@ function Footer() {
             <a href="#" className="nav-link hover:!text-[var(--foreground)]">
               Aviso de Privacidad
             </a>
-            <a href="#" className="nav-link hover:!text-[var(--foreground)]">
+            <Link href="/terminos-y-condiciones" className="nav-link hover:!text-[var(--foreground)]">
               Términos y Condiciones
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -1140,6 +1231,7 @@ export default function Home() {
       <HeroSection />
       <BenefitsSection />
       <ServicesSection />
+      <AdditionalServicesSection />
       <PackagesSection />
       <StatsSection />
       <TestimonialsSection />
