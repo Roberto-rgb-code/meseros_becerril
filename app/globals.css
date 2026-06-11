@@ -219,16 +219,38 @@ h1, h2, h3, h4 {
 
 .service-item {
   border-top: 1px solid var(--border);
-  padding: 2rem 0;
-  transition: padding-left 0.4s ease;
-}
-
-.service-item:hover {
-  padding-left: 0.5rem;
+  cursor: default;
 }
 
 .service-item:last-child {
   border-bottom: 1px solid var(--border);
+}
+
+.service-item-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.service-item:hover .service-item-content,
+.service-item:focus-within .service-item-content {
+  grid-template-rows: 1fr;
+}
+
+.service-item-inner {
+  overflow: hidden;
+}
+
+.service-item-inner > div {
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 0.4s ease 0.05s, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.05s;
+}
+
+.service-item:hover .service-item-inner > div,
+.service-item:focus-within .service-item-inner > div {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .stat-divider {

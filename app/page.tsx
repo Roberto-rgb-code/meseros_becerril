@@ -184,8 +184,6 @@ function HeroSection() {
         <source src="/5032272-hd_1920_1080_25fps.mp4" type="video/mp4" />
       </video>
 
-      <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-black/60 to-black/30" />
-
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 w-full pb-16 md:pb-24 pt-32">
         <p className="text-xs md:text-sm tracking-[0.2em] uppercase text-[var(--muted)] mb-8 animate-fade-in-up">
           Servicio profesional de meseros en Ciudad de México
@@ -367,26 +365,36 @@ function ServicesSection() {
 
         <div className="mt-4">
           {services.map((service, index) => (
-            <div key={index} className="service-item group grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8">
-              <div className="md:col-span-4">
+            <div key={index} className="service-item group">
+              <div className="flex items-center justify-between gap-6 py-6 md:py-8">
                 <h3
                   className="text-xl md:text-2xl text-[var(--foreground)] group-hover:text-[var(--gold)] transition-colors duration-300"
                   style={{ fontFamily: "var(--font-playfair)" }}
                 >
                   {service.title}
                 </h3>
+                <span className="text-[var(--muted)] text-xl flex-shrink-0 transition-transform duration-300 group-hover:rotate-45 group-hover:text-[var(--gold)]">
+                  +
+                </span>
               </div>
-              <div className="md:col-span-5">
-                <p className="text-[var(--muted)] leading-relaxed">{service.description}</p>
-              </div>
-              <div className="md:col-span-3 hidden md:block">
-                <ul className="space-y-1.5">
-                  {service.features.map((feature, idx) => (
-                    <li key={idx} className="text-xs tracking-wide text-[var(--muted)] uppercase">
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
+
+              <div className="service-item-content">
+                <div className="service-item-inner">
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 pb-6 md:pb-8">
+                    <div className="md:col-span-7">
+                      <p className="text-[var(--muted)] leading-relaxed">{service.description}</p>
+                    </div>
+                    <div className="md:col-span-5">
+                      <ul className="space-y-1.5">
+                        {service.features.map((feature, idx) => (
+                          <li key={idx} className="text-xs tracking-wide text-[var(--muted)] uppercase">
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           ))}
