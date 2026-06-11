@@ -814,6 +814,12 @@ function FAQSection() {
   const ref = useReveal();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
+  const toggleFaq = (index: number) => {
+    if (window.matchMedia("(hover: none)").matches) {
+      setOpenIndex(openIndex === index ? null : index);
+    }
+  };
+
   const faqs = [
     { question: "¿Cuántas horas incluye el servicio?", answer: "Nuestros paquetes estándar incluyen entre 4 y 6 horas de servicio. Sin embargo, podemos ajustar la duración según las necesidades específicas de tu evento. Las horas extra tienen un costo adicional que te indicamos en la cotización." },
     { question: "¿Qué incluye el uniforme de los meseros?", answer: "Nuestro personal llega uniformado con camisa blanca, pantalón negro de vestir, chaleco (según el tipo de evento), mandil y zapatos formales. Para eventos temáticos o corporativos, podemos adaptar el uniforme según tus requerimientos." },
@@ -839,22 +845,36 @@ function FAQSection() {
           align="center"
         />
 
-        <div className="space-y-0 border-t border-[var(--border)]">
+        <div className="border-t border-[var(--border)]">
           {faqs.map((faq, index) => (
-            <div key={index} className="border-b border-[var(--border)]">
-              <button
-                className="w-full py-4 sm:py-6 text-left flex items-start justify-between gap-4 sm:gap-6 group"
-                onClick={() => setOpenIndex(openIndex === index ? null : index)}
-              >
-                <span className="text-sm sm:text-base text-[var(--foreground)] font-light group-hover:text-[var(--gold)] transition-colors duration-300 pr-2">
+            <div
+              key={index}
+              className={`faq-item group ${openIndex === index ? "open" : ""}`}
+              onClick={() => toggleFaq(index)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  toggleFaq(index);
+                }
+              }}
+              role="button"
+              tabIndex={0}
+              aria-expanded={openIndex === index}
+            >
+              <div className="flex items-start justify-between gap-4 sm:gap-6 py-4 sm:py-6">
+                <span className="faq-question text-sm sm:text-base text-[var(--foreground)] font-light transition-colors duration-300 pr-2">
                   {faq.question}
                 </span>
-                <span className={`text-[var(--muted)] flex-shrink-0 text-lg transition-transform duration-300 ${openIndex === index ? "rotate-45" : ""}`}>
+                <span className="faq-toggle text-[var(--muted)] flex-shrink-0 text-lg transition-all duration-300">
                   +
                 </span>
-              </button>
-              <div className={`overflow-hidden transition-all duration-500 ${openIndex === index ? "max-h-[500px] pb-4 sm:pb-6" : "max-h-0"}`}>
-                <p className="text-[var(--muted)] leading-relaxed text-sm pr-4 sm:pr-8">{faq.answer}</p>
+              </div>
+              <div className="faq-item-content">
+                <div className="faq-item-inner">
+                  <p className="text-[var(--muted)] leading-relaxed text-sm pr-4 sm:pr-8 pb-4 sm:pb-6">
+                    {faq.answer}
+                  </p>
+                </div>
               </div>
             </div>
           ))}
