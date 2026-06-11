@@ -18,6 +18,10 @@ export const metadata: Metadata = {
   title: "Vianey Becerril | Servicio Profesional de Meseros para Eventos",
   description: "Meseros profesionales para bodas, XV años, eventos corporativos y más. Personal capacitado, uniformado y con experiencia. Cotiza ahora.",
   keywords: "meseros, eventos, bodas, XV años, servicio de meseros, catering, staff para eventos",
+  icons: {
+    icon: "/Gemini_Generated_Image_5zw3ni5zw3ni5zw3.png",
+    apple: "/Gemini_Generated_Image_5zw3ni5zw3ni5zw3.png",
+  },
 };
 
 export const viewport = {
