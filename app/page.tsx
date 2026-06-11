@@ -2,6 +2,12 @@
 
 import { useState, useEffect, useRef, ReactNode } from "react";
 
+const CONTACT = {
+  name: "Vianey Becerril",
+  phone: "33-10-15-03-58",
+  whatsapp: "5213310150358",
+};
+
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -117,7 +123,7 @@ function Navbar() {
               </a>
             ))}
             <a
-              href="https://wa.me/521234567890"
+              href={`https://wa.me/${CONTACT.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-link !text-[var(--gold)]"
@@ -155,7 +161,7 @@ function Navbar() {
                 </a>
               ))}
               <a
-                href="https://wa.me/521234567890"
+                href={`https://wa.me/${CONTACT.whatsapp}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-link !text-[var(--gold)]"
@@ -212,7 +218,7 @@ function HeroSection() {
             style={{ animationDelay: "0.45s", animationFillMode: "forwards" }}
           >
             <a
-              href="https://wa.me/521234567890?text=Hola,%20me%20interesa%20cotizar%20el%20servicio%20de%20meseros"
+              href={`https://wa.me/${CONTACT.whatsapp}?text=Hola,%20me%20interesa%20cotizar%20el%20servicio%20de%20meseros`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-link"
@@ -479,7 +485,7 @@ function PackagesSection() {
               </ul>
 
               <a
-                href={`https://wa.me/521234567890?text=Hola,%20me%20interesa%20el%20paquete%20${pkg.name}`}
+                href={`https://wa.me/${CONTACT.whatsapp}?text=Hola,%20me%20interesa%20el%20paquete%20${pkg.name}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`text-center py-3.5 text-xs tracking-[0.15em] uppercase transition-all duration-300 ${
@@ -846,7 +852,7 @@ function ContactSection() {
 - Número de invitados: ${formData.guests}
 - Mensaje: ${formData.message}`;
 
-    window.open(`https://wa.me/521234567890?text=${encodeURIComponent(message)}`, "_blank");
+    window.open(`https://wa.me/${CONTACT.whatsapp}?text=${encodeURIComponent(message)}`, "_blank");
   };
 
   return (
@@ -878,16 +884,18 @@ function ContactSection() {
             <div>
               <h3 className="text-xs tracking-[0.2em] uppercase text-[var(--muted)] mb-6">Contacto</h3>
               <div className="space-y-4">
+                <p className="text-2xl text-[var(--foreground)]" style={{ fontFamily: "var(--font-playfair)" }}>
+                  {CONTACT.name}
+                </p>
                 <a
-                  href="https://wa.me/521234567890"
+                  href={`https://wa.me/${CONTACT.whatsapp}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block text-[var(--foreground)] hover:text-[var(--gold)] transition-colors"
                 >
-                  WhatsApp — +52 123 456 7890
+                  WhatsApp — {CONTACT.phone}
                 </a>
-                <p className="text-[var(--muted)]">Teléfono — +52 123 456 7890</p>
-                <p className="text-[var(--muted)]">Correo — contacto@meserosbecerril.com</p>
+                <p className="text-[var(--muted)]">Teléfono — {CONTACT.phone}</p>
               </div>
             </div>
 
@@ -1031,8 +1039,8 @@ function Footer() {
           <div className="md:col-span-4">
             <h4 className="text-xs tracking-[0.2em] uppercase text-[var(--muted)] mb-6">Contacto</h4>
             <ul className="space-y-3 text-sm text-[var(--muted)]">
-              <li>+52 123 456 7890</li>
-              <li>contacto@meserosbecerril.com</li>
+              <li>{CONTACT.name}</li>
+              <li>{CONTACT.phone}</li>
               <li>Ciudad de México</li>
             </ul>
           </div>
@@ -1059,7 +1067,7 @@ function Footer() {
 function WhatsAppButton() {
   return (
     <a
-      href="https://wa.me/521234567890?text=Hola,%20me%20interesa%20cotizar%20el%20servicio%20de%20meseros"
+      href={`https://wa.me/${CONTACT.whatsapp}?text=Hola,%20me%20interesa%20cotizar%20el%20servicio%20de%20meseros`}
       target="_blank"
       rel="noopener noreferrer"
       className="fixed bottom-6 right-6 z-50 w-12 h-12 md:w-14 md:h-14 border border-[var(--gold)]/30 bg-[var(--charcoal)] flex items-center justify-center hover:bg-[var(--gold)] hover:border-[var(--gold)] transition-all duration-300 group"
