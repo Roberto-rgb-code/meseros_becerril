@@ -14,14 +14,9 @@ export default function TerminosPage() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-10 py-6 flex items-center justify-between gap-4">
           <Link
             href="/"
-            className="flex items-center gap-2.5 text-base sm:text-lg tracking-wide text-[var(--foreground)] hover:text-[var(--gold-dark)] transition-colors"
+            className="text-base sm:text-lg tracking-wide text-[var(--foreground)] hover:text-[var(--gold)] transition-colors"
             style={{ fontFamily: "var(--font-playfair)" }}
           >
-            <img
-              src="/Gemini_Generated_Image_5zw3ni5zw3ni5zw3.png"
-              alt=""
-              className="w-8 h-8 object-contain"
-            />
             {CONTACT.name}
           </Link>
           <Link href="/" className="text-link text-xs sm:text-sm">

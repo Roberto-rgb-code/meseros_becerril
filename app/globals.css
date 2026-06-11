@@ -1,20 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  /* Paleta Vianey Becerril — crema cálida + dorado champagne (logo) */
-  --background: #faf8f4;
-  --foreground: #2c2419;
-  --muted: #6b6358;
-  --gold: #c5a059;
-  --gold-light: #dcc48a;
-  --gold-dark: #9a7840;
-  --on-gold: #2c2419;
-  --charcoal: #f3efe8;
-  --charcoal-light: #ebe6dc;
-  --cream: #faf8f4;
-  --cream-dark: #f0ebe3;
-  --border: rgba(197, 160, 89, 0.22);
-  --border-hover: rgba(154, 120, 64, 0.45);
+  --background: #0a0a0a;
+  --foreground: #e8e4df;
+  --muted: #8a8680;
+  --gold: #c9a962;
+  --gold-light: #e8d5a3;
+  --gold-dark: #a88c4a;
+  --charcoal: #141414;
+  --charcoal-light: #1c1c1c;
+  --cream: #f5f0e6;
+  --cream-dark: #e8e0d0;
+  --border: rgba(232, 228, 223, 0.1);
+  --border-hover: rgba(232, 228, 223, 0.25);
 }
 
 @theme inline {
@@ -27,7 +25,6 @@
   --color-charcoal-light: var(--charcoal-light);
   --color-cream: var(--cream);
   --color-cream-dark: var(--cream-dark);
-  --color-on-gold: var(--on-gold);
   --font-playfair: var(--font-playfair);
   --font-montserrat: var(--font-montserrat);
 }
@@ -61,7 +58,7 @@ h1, h2, h3, h4 {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--cream-dark);
+  background: var(--charcoal);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -103,14 +100,14 @@ h1, h2, h3, h4 {
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold) 45%, var(--gold-light) 100%);
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .glass {
-  background: rgba(250, 248, 244, 0.92);
+  background: rgba(10, 10, 10, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
@@ -130,7 +127,7 @@ h1, h2, h3, h4 {
   font-weight: 400;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--gold-dark);
+  color: var(--muted);
 }
 
 .section-title {
@@ -177,8 +174,8 @@ h1, h2, h3, h4 {
 }
 
 .btn-outline:hover {
-  border-color: var(--gold);
-  background: rgba(197, 160, 89, 0.08);
+  border-color: var(--border-hover);
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .divider-line {
@@ -193,8 +190,8 @@ h1, h2, h3, h4 {
 }
 
 .card-minimal:hover {
-  border-color: var(--gold);
-  background: var(--charcoal-light);
+  border-color: var(--border-hover);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .reveal {
@@ -219,7 +216,7 @@ h1, h2, h3, h4 {
 }
 
 .nav-link:hover {
-  color: var(--gold-dark);
+  color: var(--foreground);
 }
 
 .service-item {
@@ -381,23 +378,12 @@ h1, h2, h3, h4 {
   }
 }
 
-.hero-overlay {
-  background: linear-gradient(
-    to top,
-    rgba(250, 248, 244, 0.97) 0%,
-    rgba(250, 248, 244, 0.85) 30%,
-    rgba(250, 248, 244, 0.5) 55%,
-    rgba(250, 248, 244, 0.2) 100%
-  );
+.hero-mobile-overlay {
+  background: linear-gradient(to top, rgba(10, 10, 10, 0.92) 0%, rgba(10, 10, 10, 0.5) 45%, transparent 100%);
 }
 
-.hero-mobile-overlay {
-  background: linear-gradient(
-    to top,
-    rgba(250, 248, 244, 0.97) 0%,
-    rgba(250, 248, 244, 0.75) 45%,
-    rgba(250, 248, 244, 0.3) 100%
-  );
+.hero-text-shadow {
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.85);
 }
 
 .scrollbar-hide {

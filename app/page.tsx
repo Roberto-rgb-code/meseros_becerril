@@ -110,14 +110,9 @@ function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <div className="flex items-center justify-between gap-4">
-          <a href="#" className="group min-w-0 flex-1 md:flex-none flex items-center gap-2.5 sm:gap-3">
-            <img
-              src="/Gemini_Generated_Image_5zw3ni5zw3ni5zw3.png"
-              alt=""
-              className="w-8 h-8 sm:w-9 sm:h-9 object-contain flex-shrink-0"
-            />
+          <a href="#" className="group min-w-0 flex-1 md:flex-none">
             <span
-              className="block text-base sm:text-lg md:text-xl tracking-wide text-[var(--foreground)] group-hover:text-[var(--gold-dark)] transition-colors duration-300 truncate"
+              className="block text-base sm:text-lg md:text-xl tracking-wide text-[var(--foreground)] group-hover:text-[var(--gold)] transition-colors duration-300 truncate"
               style={{ fontFamily: "var(--font-playfair)" }}
             >
               {CONTACT.name}
@@ -193,9 +188,9 @@ function HeroSection() {
         <source src="/5032272-hd_1920_1080_25fps.mp4" type="video/mp4" />
       </video>
 
-      <div className="absolute inset-0 hero-overlay pointer-events-none" />
+      <div className="absolute inset-0 hero-mobile-overlay md:hidden pointer-events-none" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 w-full pb-12 sm:pb-16 md:pb-24 pt-24 sm:pt-32">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 w-full pb-12 sm:pb-16 md:pb-24 pt-24 sm:pt-32 hero-text-shadow md:[text-shadow:none]">
         <p className="text-[10px] sm:text-xs md:text-sm tracking-[0.15em] sm:tracking-[0.2em] uppercase text-[var(--muted)] mb-6 sm:mb-8 animate-fade-in-up">
           Servicio profesional de meseros en la zona metropolitana de Guadalajara
         </p>
@@ -586,7 +581,7 @@ function PackagesSection() {
             <div
               key={index}
               className={`card-minimal p-6 sm:p-8 md:p-10 flex flex-col ${
-                pkg.popular ? "border-[var(--gold)] bg-[var(--cream-dark)] md:order-none order-first" : ""
+                pkg.popular ? "border-[var(--gold)]/40 bg-[var(--charcoal)] md:order-none order-first" : ""
               }`}
             >
               {pkg.popular && (
@@ -616,7 +611,7 @@ function PackagesSection() {
                 rel="noopener noreferrer"
                 className={`text-center py-3.5 text-xs tracking-[0.15em] uppercase transition-all duration-300 ${
                   pkg.popular
-                    ? "bg-[var(--gold)] text-[var(--on-gold)] hover:bg-[var(--gold-light)]"
+                    ? "bg-[var(--gold)] text-[var(--background)] hover:bg-[var(--gold-light)]"
                     : "btn-outline text-[var(--foreground)]"
                 }`}
               >
@@ -1136,7 +1131,7 @@ function ContactSection() {
 
             <button
               type="submit"
-              className="btn-primary w-full sm:w-auto px-10 py-4 bg-[var(--gold)] text-[var(--on-gold)] text-xs tracking-[0.15em] uppercase hover:bg-[var(--gold-light)] transition-colors duration-300"
+              className="btn-primary w-full sm:w-auto px-10 py-4 bg-[var(--gold)] text-[var(--background)] text-xs tracking-[0.15em] uppercase hover:bg-[var(--gold-light)] transition-colors duration-300"
             >
               Enviar Cotización por WhatsApp
             </button>
@@ -1218,11 +1213,11 @@ function WhatsAppButton() {
       href={`https://wa.me/${CONTACT.whatsapp}?text=Hola,%20me%20interesa%20cotizar%20el%20servicio%20de%20meseros`}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-12 h-12 md:w-14 md:h-14 border border-[var(--gold)] bg-[var(--background)] shadow-[0_4px_20px_rgba(197,160,89,0.25)] flex items-center justify-center hover:bg-[var(--gold)] hover:border-[var(--gold-dark)] transition-all duration-300 group"
+      className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-12 h-12 md:w-14 md:h-14 border border-[var(--gold)]/30 bg-[var(--charcoal)] flex items-center justify-center hover:bg-[var(--gold)] hover:border-[var(--gold)] transition-all duration-300 group"
       style={{ marginBottom: "env(safe-area-inset-bottom, 0px)" }}
       aria-label="Contactar por WhatsApp"
     >
-      <svg className="w-5 h-5 md:w-6 md:h-6 text-[var(--gold-dark)] group-hover:text-[var(--on-gold)] transition-colors" fill="currentColor" viewBox="0 0 24 24">
+      <svg className="w-5 h-5 md:w-6 md:h-6 text-[var(--gold)] group-hover:text-[var(--background)] transition-colors" fill="currentColor" viewBox="0 0 24 24">
         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
       </svg>
     </a>
