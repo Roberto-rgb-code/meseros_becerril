@@ -196,7 +196,7 @@ function HeroSection() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 w-full pb-12 sm:pb-16 md:pb-24 pt-24 sm:pt-32 hero-text-shadow md:[text-shadow:none]">
         <p className="text-[10px] sm:text-xs md:text-sm tracking-[0.15em] sm:tracking-[0.2em] uppercase text-[var(--muted)] mb-6 sm:mb-8 animate-fade-in-up">
-          Servicio profesional de meseros en Ciudad de México
+          Servicio profesional de meseros en la zona metropolitana de Guadalajara
         </p>
 
         <div className="max-w-4xl">
@@ -932,7 +932,7 @@ function ContactSection() {
                 {CONTACT.name}
               </p>
               <p className="text-sm sm:text-base text-[var(--muted)] leading-relaxed">
-                Ciudad de México y área metropolitana
+                Zona metropolitana de Guadalajara
               </p>
             </div>
 
@@ -1093,7 +1093,7 @@ function Footer() {
             <ul className="space-y-3 text-sm text-[var(--muted)]">
               <li>{CONTACT.name}</li>
               <li>{CONTACT.phone}</li>
-              <li>Ciudad de México</li>
+              <li>Zona metropolitana de Guadalajara</li>
             </ul>
           </div>
         </div>
