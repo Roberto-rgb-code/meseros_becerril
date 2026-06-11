@@ -35,6 +35,7 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -43,6 +44,7 @@ body {
   font-family: var(--font-montserrat), system-ui, sans-serif;
   font-weight: 300;
   letter-spacing: 0.01em;
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4 {
@@ -130,14 +132,14 @@ h1, h2, h3, h4 {
 
 .section-title {
   font-family: var(--font-playfair), Georgia, serif;
-  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-size: clamp(1.75rem, 6vw, 3.5rem);
   font-weight: 400;
   line-height: 1.15;
   color: var(--foreground);
 }
 
 .section-description {
-  font-size: 1rem;
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
   line-height: 1.75;
   color: var(--muted);
   max-width: 36rem;
@@ -248,9 +250,86 @@ h1, h2, h3, h4 {
 }
 
 .service-item:hover .service-item-inner > div,
-.service-item:focus-within .service-item-inner > div {
+.service-item:focus-within .service-item-inner > div,
+.service-item.open .service-item-inner > div {
   opacity: 1;
   transform: translateY(0);
+}
+
+.service-item.open .service-item-content {
+  grid-template-rows: 1fr;
+}
+
+.service-item.open .service-toggle {
+  transform: rotate(45deg);
+  color: var(--gold);
+}
+
+@media (hover: none) {
+  .service-item {
+    cursor: pointer;
+  }
+
+  .service-item:hover .service-item-content {
+    grid-template-rows: 0fr;
+  }
+
+  .service-item:hover .service-item-inner > div {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  .service-item:hover .service-toggle {
+    transform: none;
+    color: var(--muted);
+  }
+}
+
+@media (hover: hover) {
+  .service-item:hover .service-item-content {
+    grid-template-rows: 1fr;
+  }
+
+  .service-item:hover .service-toggle {
+    transform: rotate(45deg);
+    color: var(--gold);
+  }
+}
+
+.hero-mobile-overlay {
+  background: linear-gradient(to top, rgba(10, 10, 10, 0.92) 0%, rgba(10, 10, 10, 0.5) 45%, transparent 100%);
+}
+
+.hero-text-shadow {
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.85);
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.section-padding {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-padding {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
 }
 
 .stat-divider {

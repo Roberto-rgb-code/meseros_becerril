@@ -46,8 +46,8 @@ function SectionHeader({
   align?: "left" | "center";
 }) {
   return (
-    <div className={`mb-14 md:mb-20 ${align === "center" ? "text-center mx-auto" : ""}`}>
-      <div className={`flex items-baseline gap-3 mb-8 ${align === "center" ? "justify-center" : ""}`}>
+    <div className={`mb-10 md:mb-14 lg:mb-20 ${align === "center" ? "text-center mx-auto" : ""}`}>
+      <div className={`flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-6 md:mb-8 ${align === "center" ? "justify-center" : ""}`}>
         <span className="section-number">{number}{"//"}</span>
         <span className="section-label">{label}</span>
       </div>
@@ -91,6 +91,13 @@ function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMobileMenuOpen]);
+
   const navLinks = [
     { href: "#servicios", label: "Servicios" },
     { href: "#paquetes", label: "Paquetes" },
@@ -102,17 +109,17 @@ function Navbar() {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled ? "glass py-4" : "bg-transparent py-6 md:py-8"
+        isScrolled || isMobileMenuOpen ? "glass py-3 md:py-4" : "bg-transparent py-4 md:py-8"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <div className="flex items-center justify-between">
-          <a href="#" className="group">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+        <div className="flex items-center justify-between gap-4">
+          <a href="#" className="group min-w-0 flex-1 md:flex-none">
             <span
-              className="text-lg md:text-xl tracking-wide text-[var(--foreground)] group-hover:text-[var(--gold)] transition-colors duration-300"
+              className="block text-base sm:text-lg md:text-xl tracking-wide text-[var(--foreground)] group-hover:text-[var(--gold)] transition-colors duration-300 truncate"
               style={{ fontFamily: "var(--font-playfair)" }}
             >
-              Meseros Becerril
+              {CONTACT.name}
             </span>
           </a>
 
@@ -133,9 +140,10 @@ function Navbar() {
           </div>
 
           <button
-            className="md:hidden text-[var(--foreground)] p-2"
+            className="md:hidden text-[var(--foreground)] p-2 -mr-2 flex-shrink-0"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
+            aria-expanded={isMobileMenuOpen}
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {isMobileMenuOpen ? (
@@ -148,13 +156,13 @@ function Navbar() {
         </div>
 
         {isMobileMenuOpen && (
-          <div className="md:hidden mt-6 pt-6 border-t border-[var(--border)]">
-            <div className="flex flex-col gap-5">
+          <div className="md:hidden fixed inset-0 top-[57px] bg-[var(--background)] z-40 overflow-y-auto">
+            <div className="flex flex-col gap-6 px-4 sm:px-6 py-8 pb-24">
               {navLinks.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
-                  className="nav-link"
+                  className="nav-link text-base py-2 border-b border-[var(--border)]"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.label}
@@ -164,7 +172,8 @@ function Navbar() {
                 href={`https://wa.me/${CONTACT.whatsapp}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-link !text-[var(--gold)]"
+                className="text-link !text-[var(--gold)] text-base mt-4"
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 Cotizar Ahora
               </a>
@@ -178,26 +187,28 @@ function Navbar() {
 
 function HeroSection() {
   return (
-    <section className="relative min-h-screen flex flex-col justify-end overflow-hidden">
+    <section className="relative min-h-[100dvh] flex flex-col justify-end overflow-hidden">
       <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
         <source src="/5032272-hd_1920_1080_25fps.mp4" type="video/mp4" />
       </video>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 w-full pb-16 md:pb-24 pt-32">
-        <p className="text-xs md:text-sm tracking-[0.2em] uppercase text-[var(--muted)] mb-8 animate-fade-in-up">
+      <div className="absolute inset-0 hero-mobile-overlay md:hidden pointer-events-none" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 w-full pb-12 sm:pb-16 md:pb-24 pt-24 sm:pt-32 hero-text-shadow md:[text-shadow:none]">
+        <p className="text-[10px] sm:text-xs md:text-sm tracking-[0.15em] sm:tracking-[0.2em] uppercase text-[var(--muted)] mb-6 sm:mb-8 animate-fade-in-up">
           Servicio profesional de meseros en Ciudad de México
         </p>
 
         <div className="max-w-4xl">
           <span
-            className="inline-block text-xs tracking-[0.2em] uppercase text-[var(--gold)] mb-6 animate-fade-in-up opacity-0"
+            className="inline-block text-[10px] sm:text-xs tracking-[0.15em] sm:tracking-[0.2em] uppercase text-[var(--gold)] mb-4 sm:mb-6 animate-fade-in-up opacity-0"
             style={{ animationDelay: "0.15s", animationFillMode: "forwards" }}
           >
             ✨ +350 Eventos Exitosos
           </span>
 
           <h1
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[var(--foreground)] mb-8 leading-[1.1] animate-fade-in-up opacity-0"
+            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-[var(--foreground)] mb-6 sm:mb-8 leading-[1.1] animate-fade-in-up opacity-0"
             style={{ fontFamily: "var(--font-playfair)", animationDelay: "0.25s", animationFillMode: "forwards" }}
           >
             Meseros <span className="text-gradient">Profesionales</span>
@@ -206,7 +217,7 @@ function HeroSection() {
           </h1>
 
           <p
-            className="text-base md:text-lg text-[var(--muted)] max-w-xl mb-10 leading-relaxed animate-fade-in-up opacity-0"
+            className="text-sm sm:text-base md:text-lg text-[var(--muted)] max-w-xl mb-8 sm:mb-10 leading-relaxed animate-fade-in-up opacity-0"
             style={{ animationDelay: "0.35s", animationFillMode: "forwards" }}
           >
             Personal capacitado, uniformado y con experiencia en protocolo.
@@ -231,7 +242,7 @@ function HeroSection() {
           </div>
 
           <p
-            className="mt-12 text-xs tracking-[0.15em] uppercase text-[var(--muted)] animate-fade-in-up opacity-0"
+            className="mt-8 sm:mt-12 text-[10px] sm:text-xs tracking-[0.12em] sm:tracking-[0.15em] uppercase text-[var(--muted)] animate-fade-in-up opacity-0"
             style={{ animationDelay: "0.55s", animationFillMode: "forwards" }}
           >
             Disponibles fines de semana y días festivos
@@ -255,9 +266,9 @@ function BenefitsSection() {
   ];
 
   return (
-    <section className="py-24 md:py-32 lg:py-40 border-t border-[var(--border)]">
-      <div ref={ref} className="reveal max-w-7xl mx-auto px-6 lg:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+    <section className="section-padding border-t border-[var(--border)]">
+      <div ref={ref} className="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 lg:gap-24 items-start">
           <div>
             <SectionHeader
               number="01"
@@ -296,6 +307,13 @@ function BenefitsSection() {
 
 function ServicesSection() {
   const ref = useReveal();
+  const [openService, setOpenService] = useState<number | null>(null);
+
+  const toggleService = (index: number) => {
+    if (window.matchMedia("(hover: none)").matches) {
+      setOpenService(openService === index ? null : index);
+    }
+  };
 
   const services = [
     {
@@ -341,8 +359,8 @@ function ServicesSection() {
   ];
 
   return (
-    <section id="servicios" className="py-24 md:py-32 lg:py-40 bg-[var(--charcoal)]">
-      <div ref={ref} className="reveal max-w-7xl mx-auto px-6 lg:px-10">
+    <section id="servicios" className="section-padding bg-[var(--charcoal)]">
+      <div ref={ref} className="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <SectionHeader
           number="02"
           label="Nuestros Servicios"
@@ -356,29 +374,42 @@ function ServicesSection() {
 
         <div className="mt-4">
           {services.map((service, index) => (
-            <div key={index} className="service-item group">
-              <div className="flex items-center justify-between gap-6 py-6 md:py-8">
+            <div
+              key={index}
+              className={`service-item group ${openService === index ? "open" : ""}`}
+              onClick={() => toggleService(index)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  toggleService(index);
+                }
+              }}
+              role="button"
+              tabIndex={0}
+              aria-expanded={openService === index}
+            >
+              <div className="flex items-start sm:items-center justify-between gap-4 py-5 sm:py-6 md:py-8">
                 <h3
-                  className="text-xl md:text-2xl text-[var(--foreground)] group-hover:text-[var(--gold)] transition-colors duration-300"
+                  className="text-lg sm:text-xl md:text-2xl text-[var(--foreground)] group-hover:text-[var(--gold)] transition-colors duration-300 pr-2"
                   style={{ fontFamily: "var(--font-playfair)" }}
                 >
                   {service.title}
                 </h3>
-                <span className="text-[var(--muted)] text-xl flex-shrink-0 transition-transform duration-300 group-hover:rotate-45 group-hover:text-[var(--gold)]">
+                <span className="service-toggle text-[var(--muted)] text-xl flex-shrink-0 transition-transform duration-300">
                   +
                 </span>
               </div>
 
               <div className="service-item-content">
                 <div className="service-item-inner">
-                  <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 pb-6 md:pb-8">
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-8 pb-5 sm:pb-6 md:pb-8">
                     <div className="md:col-span-7">
-                      <p className="text-[var(--muted)] leading-relaxed">{service.description}</p>
+                      <p className="text-sm sm:text-base text-[var(--muted)] leading-relaxed">{service.description}</p>
                     </div>
-                    <div className="md:col-span-5">
+                    <div className="md:col-span-5 mt-2 md:mt-0">
                       <ul className="space-y-1.5">
                         {service.features.map((feature, idx) => (
-                          <li key={idx} className="text-xs tracking-wide text-[var(--muted)] uppercase">
+                          <li key={idx} className="text-[10px] sm:text-xs tracking-wide text-[var(--muted)] uppercase">
                             {feature}
                           </li>
                         ))}
@@ -442,8 +473,8 @@ function PackagesSection() {
   ];
 
   return (
-    <section id="paquetes" className="py-24 md:py-32 lg:py-40">
-      <div ref={ref} className="reveal max-w-7xl mx-auto px-6 lg:px-10">
+    <section id="paquetes" className="section-padding">
+      <div ref={ref} className="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <SectionHeader
           number="03"
           label="Paquetes"
@@ -455,12 +486,12 @@ function PackagesSection() {
           description="Paquetes para diferentes tipos de eventos"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
           {packages.map((pkg, index) => (
             <div
               key={index}
-              className={`card-minimal p-8 md:p-10 flex flex-col ${
-                pkg.popular ? "border-[var(--gold)]/40 bg-[var(--charcoal)]" : ""
+              className={`card-minimal p-6 sm:p-8 md:p-10 flex flex-col ${
+                pkg.popular ? "border-[var(--gold)]/40 bg-[var(--charcoal)] md:order-none order-first" : ""
               }`}
             >
               {pkg.popular && (
@@ -514,15 +545,19 @@ function StatsSection() {
 
   return (
     <section className="border-y border-[var(--border)]">
-      <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <div className="grid grid-cols-2 md:grid-cols-4 py-12 md:py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 py-8 sm:py-12 md:py-16 gap-y-6">
           {stats.map((stat, index) => (
             <div
               key={index}
-              className={`text-center px-4 ${index > 0 ? "md:border-l md:border-[var(--border)]" : ""}`}
+              className={`text-center px-2 sm:px-4 ${
+                index % 2 === 1 ? "border-l border-[var(--border)]" : ""
+              } ${index > 1 ? "md:border-l md:border-[var(--border)]" : ""} ${
+                index >= 2 ? "border-t border-[var(--border)] pt-6 md:border-t-0 md:pt-0" : ""
+              }`}
             >
               <div
-                className="text-3xl md:text-5xl text-[var(--foreground)] mb-2"
+                className="text-2xl sm:text-3xl md:text-5xl text-[var(--foreground)] mb-1 sm:mb-2"
                 style={{ fontFamily: "var(--font-playfair)" }}
               >
                 {stat.number}
@@ -567,8 +602,8 @@ function TestimonialsSection() {
   ];
 
   return (
-    <section id="testimonios" className="py-24 md:py-32 lg:py-40 bg-[var(--charcoal)]">
-      <div ref={ref} className="reveal max-w-7xl mx-auto px-6 lg:px-10">
+    <section id="testimonios" className="section-padding bg-[var(--charcoal)]">
+      <div ref={ref} className="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <SectionHeader
           number="04"
           label="Testimonios"
@@ -580,13 +615,13 @@ function TestimonialsSection() {
           description="La satisfacción de nuestros clientes es nuestra mayor recompensa"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
           {testimonials.map((testimonial, index) => (
-            <article key={index} className="card-minimal p-8 md:p-10">
-              <div className="flex items-center justify-between mb-8">
+            <article key={index} className="card-minimal p-6 sm:p-8 md:p-10">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 sm:mb-8">
                 <div>
-                  <h4 className="text-[var(--foreground)] font-medium">{testimonial.name}</h4>
-                  <p className="text-xs tracking-[0.15em] uppercase text-[var(--gold)] mt-1">{testimonial.event}</p>
+                  <h4 className="text-[var(--foreground)] font-medium text-sm sm:text-base">{testimonial.name}</h4>
+                  <p className="text-[10px] sm:text-xs tracking-[0.15em] uppercase text-[var(--gold)] mt-1">{testimonial.event}</p>
                 </div>
                 <div className="flex gap-0.5">
                   {[...Array(testimonial.rating)].map((_, i) => (
@@ -594,18 +629,18 @@ function TestimonialsSection() {
                   ))}
                 </div>
               </div>
-              <p className="text-[var(--muted)] leading-[1.85] italic">&ldquo;{testimonial.text}&rdquo;</p>
+              <p className="text-sm sm:text-base text-[var(--muted)] leading-[1.85] italic">&ldquo;{testimonial.text}&rdquo;</p>
             </article>
           ))}
         </div>
 
-        <div className="mt-20 pt-16 border-t border-[var(--border)]">
-          <p className="text-xs tracking-[0.2em] uppercase text-[var(--muted)] mb-10 text-center">
+        <div className="mt-12 sm:mt-20 pt-10 sm:pt-16 border-t border-[var(--border)]">
+          <p className="text-[10px] sm:text-xs tracking-[0.2em] uppercase text-[var(--muted)] mb-6 sm:mb-10 text-center">
             Empresas que confían en nosotros
           </p>
-          <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-6">
+          <div className="flex flex-wrap justify-center items-center gap-x-6 sm:gap-x-12 gap-y-4">
             {["EMPRESA 1", "EMPRESA 2", "EMPRESA 3", "EMPRESA 4", "EMPRESA 5"].map((company, index) => (
-              <div key={index} className="text-[var(--muted)] text-sm tracking-[0.15em] uppercase">
+              <div key={index} className="text-[var(--muted)] text-xs sm:text-sm tracking-[0.1em] sm:tracking-[0.15em] uppercase">
                 {company}
               </div>
             ))}
@@ -645,8 +680,8 @@ function GallerySection() {
   };
 
   return (
-    <section id="galeria" className="py-24 md:py-32 lg:py-40">
-      <div ref={ref} className="reveal max-w-7xl mx-auto px-6 lg:px-10">
+    <section id="galeria" className="section-padding">
+      <div ref={ref} className="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <SectionHeader
           number="05"
           label="Galería"
@@ -658,7 +693,7 @@ function GallerySection() {
           description="Cada evento es una oportunidad para crear experiencias memorables"
         />
 
-        <div className="relative aspect-[16/9] md:aspect-[21/9] overflow-hidden mb-6">
+        <div className="relative aspect-[4/3] sm:aspect-[16/9] md:aspect-[21/9] overflow-hidden mb-4 sm:mb-6 -mx-4 sm:mx-0">
           {images.map((image, index) => (
             <div
               key={index}
@@ -668,9 +703,9 @@ function GallerySection() {
             >
               <img src={image.src} alt={image.alt} className="w-full h-full object-cover" loading={index === 0 ? "eager" : "lazy"} />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
-                <span className="text-xs tracking-[0.2em] uppercase text-[var(--gold)] mb-3 block">{image.category}</span>
-                <h3 className="text-xl md:text-3xl text-white" style={{ fontFamily: "var(--font-playfair)" }}>
+              <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-10">
+                <span className="text-[10px] sm:text-xs tracking-[0.2em] uppercase text-[var(--gold)] mb-2 sm:mb-3 block">{image.category}</span>
+                <h3 className="text-lg sm:text-xl md:text-3xl text-white leading-tight" style={{ fontFamily: "var(--font-playfair)" }}>
                   {image.alt}
                 </h3>
               </div>
@@ -679,7 +714,7 @@ function GallerySection() {
 
           <button
             onClick={() => goToSlide((currentSlide - 1 + images.length) % images.length)}
-            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 border border-white/20 flex items-center justify-center text-white hover:border-[var(--gold)] hover:text-[var(--gold)] transition-colors"
+            className="absolute left-2 sm:left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-10 sm:h-10 border border-white/20 flex items-center justify-center text-white hover:border-[var(--gold)] hover:text-[var(--gold)] transition-colors"
             aria-label="Imagen anterior"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -688,7 +723,7 @@ function GallerySection() {
           </button>
           <button
             onClick={() => goToSlide((currentSlide + 1) % images.length)}
-            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 border border-white/20 flex items-center justify-center text-white hover:border-[var(--gold)] hover:text-[var(--gold)] transition-colors"
+            className="absolute right-2 sm:right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-10 sm:h-10 border border-white/20 flex items-center justify-center text-white hover:border-[var(--gold)] hover:text-[var(--gold)] transition-colors"
             aria-label="Imagen siguiente"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -697,12 +732,12 @@ function GallerySection() {
           </button>
         </div>
 
-        <div className="flex gap-2 overflow-x-auto pb-2">
+        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
           {images.map((image, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`flex-shrink-0 w-20 h-14 md:w-28 md:h-20 overflow-hidden transition-opacity duration-300 ${
+              className={`flex-shrink-0 w-16 h-11 sm:w-20 sm:h-14 md:w-28 md:h-20 overflow-hidden transition-opacity duration-300 ${
                 index === currentSlide ? "opacity-100 ring-1 ring-[var(--gold)]" : "opacity-40 hover:opacity-70"
               }`}
               aria-label={`Ver ${image.alt}`}
@@ -712,18 +747,18 @@ function GallerySection() {
           ))}
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 pt-16 border-t border-[var(--border)]">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mt-10 sm:mt-16 pt-10 sm:pt-16 border-t border-[var(--border)]">
           {[
             { number: "500+", label: "Fotos de Eventos" },
             { number: "8", label: "Tipos de Servicios" },
             { number: "100%", label: "Eventos Documentados" },
             { number: "5⭐", label: "Calificación Promedio" },
           ].map((stat, index) => (
-            <div key={index} className="text-center">
-              <div className="text-2xl md:text-3xl text-[var(--foreground)] mb-1" style={{ fontFamily: "var(--font-playfair)" }}>
+            <div key={index} className="text-center px-1">
+              <div className="text-xl sm:text-2xl md:text-3xl text-[var(--foreground)] mb-1" style={{ fontFamily: "var(--font-playfair)" }}>
                 {stat.number}
               </div>
-              <div className="text-xs tracking-[0.15em] uppercase text-[var(--muted)]">{stat.label}</div>
+              <div className="text-[10px] sm:text-xs tracking-[0.1em] sm:tracking-[0.15em] uppercase text-[var(--muted)] leading-snug">{stat.label}</div>
             </div>
           ))}
         </div>
@@ -743,8 +778,8 @@ function ProcessSection() {
   ];
 
   return (
-    <section id="proceso" className="py-24 md:py-32 lg:py-40 bg-[var(--charcoal)]">
-      <div ref={ref} className="reveal max-w-7xl mx-auto px-6 lg:px-10">
+    <section id="proceso" className="section-padding bg-[var(--charcoal)]">
+      <div ref={ref} className="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <SectionHeader
           number="06"
           label="Proceso"
@@ -756,12 +791,12 @@ function ProcessSection() {
           description="Contratar nuestros servicios es fácil y rápido"
         />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-12">
           {steps.map((step, index) => (
-            <div key={index} className="group">
-              <span className="section-number block mb-6">{step.number}{"//"}</span>
+            <div key={index} className="group border-t border-[var(--border)] pt-6 sm:border-0 sm:pt-0">
+              <span className="section-number block mb-4 sm:mb-6">{step.number}{"//"}</span>
               <h3
-                className="text-xl text-[var(--foreground)] mb-4 group-hover:text-[var(--gold)] transition-colors duration-300"
+                className="text-lg sm:text-xl text-[var(--foreground)] mb-3 sm:mb-4 group-hover:text-[var(--gold)] transition-colors duration-300"
                 style={{ fontFamily: "var(--font-playfair)" }}
               >
                 {step.title}
@@ -790,8 +825,8 @@ function FAQSection() {
   ];
 
   return (
-    <section className="py-24 md:py-32 lg:py-40">
-      <div ref={ref} className="reveal max-w-3xl mx-auto px-6 lg:px-10">
+    <section className="section-padding">
+      <div ref={ref} className="reveal max-w-3xl mx-auto px-4 sm:px-6 lg:px-10">
         <SectionHeader
           number="07"
           label="FAQ"
@@ -808,18 +843,18 @@ function FAQSection() {
           {faqs.map((faq, index) => (
             <div key={index} className="border-b border-[var(--border)]">
               <button
-                className="w-full py-6 text-left flex items-start justify-between gap-6 group"
+                className="w-full py-4 sm:py-6 text-left flex items-start justify-between gap-4 sm:gap-6 group"
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
               >
-                <span className="text-[var(--foreground)] font-light group-hover:text-[var(--gold)] transition-colors duration-300">
+                <span className="text-sm sm:text-base text-[var(--foreground)] font-light group-hover:text-[var(--gold)] transition-colors duration-300 pr-2">
                   {faq.question}
                 </span>
-                <span className={`text-[var(--muted)] flex-shrink-0 transition-transform duration-300 ${openIndex === index ? "rotate-45" : ""}`}>
+                <span className={`text-[var(--muted)] flex-shrink-0 text-lg transition-transform duration-300 ${openIndex === index ? "rotate-45" : ""}`}>
                   +
                 </span>
               </button>
-              <div className={`overflow-hidden transition-all duration-500 ${openIndex === index ? "max-h-96 pb-6" : "max-h-0"}`}>
-                <p className="text-[var(--muted)] leading-relaxed text-sm pr-8">{faq.answer}</p>
+              <div className={`overflow-hidden transition-all duration-500 ${openIndex === index ? "max-h-[500px] pb-4 sm:pb-6" : "max-h-0"}`}>
+                <p className="text-[var(--muted)] leading-relaxed text-sm pr-4 sm:pr-8">{faq.answer}</p>
               </div>
             </div>
           ))}
@@ -856,8 +891,8 @@ function ContactSection() {
   };
 
   return (
-    <section id="contacto" className="py-24 md:py-32 lg:py-40 bg-[var(--charcoal)] border-t border-[var(--border)]">
-      <div ref={ref} className="reveal max-w-7xl mx-auto px-6 lg:px-10">
+    <section id="contacto" className="section-padding bg-[var(--charcoal)] border-t border-[var(--border)]">
+      <div ref={ref} className="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <SectionHeader
           number="08"
           label="Contacto"
@@ -869,39 +904,36 @@ function ContactSection() {
           description="Contáctanos hoy y asegura el servicio para tu próximo evento"
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-20">
-          <div className="lg:col-span-5 space-y-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-20">
+          <div className="lg:col-span-5 space-y-8 sm:space-y-12">
             <div>
-              <h3 className="text-xs tracking-[0.2em] uppercase text-[var(--muted)] mb-6">Visítanos</h3>
-              <p className="text-2xl text-[var(--foreground)] mb-4" style={{ fontFamily: "var(--font-playfair)" }}>
-                Meseros Becerril
+              <h3 className="text-xs tracking-[0.2em] uppercase text-[var(--muted)] mb-4 sm:mb-6">Visítanos</h3>
+              <p className="text-xl sm:text-2xl text-[var(--foreground)] mb-3 sm:mb-4" style={{ fontFamily: "var(--font-playfair)" }}>
+                {CONTACT.name}
               </p>
-              <p className="text-[var(--muted)] leading-relaxed">
+              <p className="text-sm sm:text-base text-[var(--muted)] leading-relaxed">
                 Ciudad de México y área metropolitana
               </p>
             </div>
 
             <div>
-              <h3 className="text-xs tracking-[0.2em] uppercase text-[var(--muted)] mb-6">Contacto</h3>
-              <div className="space-y-4">
-                <p className="text-2xl text-[var(--foreground)]" style={{ fontFamily: "var(--font-playfair)" }}>
-                  {CONTACT.name}
-                </p>
+              <h3 className="text-xs tracking-[0.2em] uppercase text-[var(--muted)] mb-4 sm:mb-6">Contacto</h3>
+              <div className="space-y-3 sm:space-y-4">
                 <a
                   href={`https://wa.me/${CONTACT.whatsapp}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block text-[var(--foreground)] hover:text-[var(--gold)] transition-colors"
+                  className="block text-sm sm:text-base text-[var(--foreground)] hover:text-[var(--gold)] transition-colors break-all"
                 >
                   WhatsApp — {CONTACT.phone}
                 </a>
-                <p className="text-[var(--muted)]">Teléfono — {CONTACT.phone}</p>
+                <p className="text-sm sm:text-base text-[var(--muted)]">Teléfono — {CONTACT.phone}</p>
               </div>
             </div>
 
             <div>
-              <h3 className="text-xs tracking-[0.2em] uppercase text-[var(--muted)] mb-6">Redes</h3>
-              <div className="flex gap-6">
+              <h3 className="text-xs tracking-[0.2em] uppercase text-[var(--muted)] mb-4 sm:mb-6">Redes</h3>
+              <div className="flex flex-wrap gap-4 sm:gap-6">
                 {["Facebook", "Instagram", "TikTok"].map((social) => (
                   <a key={social} href="#" className="nav-link hover:!text-[var(--gold)]">
                     {social}
@@ -911,8 +943,8 @@ function ContactSection() {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="lg:col-span-7">
-            <h3 className="text-xs tracking-[0.2em] uppercase text-[var(--muted)] mb-8">Solicita tu Cotización</h3>
+          <form onSubmit={handleSubmit} className="lg:col-span-7 pt-6 lg:pt-0 border-t lg:border-t-0 border-[var(--border)]">
+            <h3 className="text-xs tracking-[0.2em] uppercase text-[var(--muted)] mb-6 sm:mb-8">Solicita tu Cotización</h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
               <div>
@@ -1010,12 +1042,12 @@ function Footer() {
   ];
 
   return (
-    <footer className="py-16 md:py-20 border-t border-[var(--border)]">
-      <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
-          <div className="md:col-span-5">
-            <span className="text-xl text-[var(--foreground)]" style={{ fontFamily: "var(--font-playfair)" }}>
-              Meseros Becerril
+    <footer className="py-12 sm:py-16 md:py-20 border-t border-[var(--border)] pb-24 sm:pb-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-8 sm:gap-12 mb-12 sm:mb-16">
+          <div className="md:col-span-5 sm:col-span-2">
+            <span className="text-lg sm:text-xl text-[var(--foreground)]" style={{ fontFamily: "var(--font-playfair)" }}>
+              {CONTACT.name}
             </span>
             <p className="text-[var(--muted)] mt-4 max-w-sm leading-relaxed text-sm">
               Servicio profesional de meseros para todo tipo de eventos.
@@ -1046,11 +1078,11 @@ function Footer() {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-[var(--border)] flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-[var(--muted)] tracking-wide">
-            © {new Date().getFullYear()} Meseros Becerril. Todos los derechos reservados.
+        <div className="pt-6 sm:pt-8 border-t border-[var(--border)] flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+          <p className="text-[10px] sm:text-xs text-[var(--muted)] tracking-wide">
+            © {new Date().getFullYear()} {CONTACT.name}. Todos los derechos reservados.
           </p>
-          <div className="flex gap-8 text-xs">
+          <div className="flex flex-wrap justify-center gap-4 sm:gap-8 text-[10px] sm:text-xs">
             <a href="#" className="nav-link hover:!text-[var(--foreground)]">
               Aviso de Privacidad
             </a>
@@ -1070,7 +1102,8 @@ function WhatsAppButton() {
       href={`https://wa.me/${CONTACT.whatsapp}?text=Hola,%20me%20interesa%20cotizar%20el%20servicio%20de%20meseros`}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 w-12 h-12 md:w-14 md:h-14 border border-[var(--gold)]/30 bg-[var(--charcoal)] flex items-center justify-center hover:bg-[var(--gold)] hover:border-[var(--gold)] transition-all duration-300 group"
+      className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-12 h-12 md:w-14 md:h-14 border border-[var(--gold)]/30 bg-[var(--charcoal)] flex items-center justify-center hover:bg-[var(--gold)] hover:border-[var(--gold)] transition-all duration-300 group"
+      style={{ marginBottom: "env(safe-area-inset-bottom, 0px)" }}
       aria-label="Contactar por WhatsApp"
     >
       <svg className="w-5 h-5 md:w-6 md:h-6 text-[var(--gold)] group-hover:text-[var(--background)] transition-colors" fill="currentColor" viewBox="0 0 24 24">
@@ -1082,7 +1115,7 @@ function WhatsAppButton() {
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[var(--background)]">
+    <main className="min-h-screen bg-[var(--background)] overflow-x-hidden">
       <Navbar />
       <HeroSection />
       <BenefitsSection />
