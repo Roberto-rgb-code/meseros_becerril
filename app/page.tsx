@@ -4,7 +4,9 @@ import { useState, useEffect, useRef, ReactNode } from "react";
 import Link from "next/link";
 import { CONTACT } from "./constants";
 
-function useReveal() {
+type RevealDirection = "left" | "right" | "up";
+
+function useRevealRef() {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -18,7 +20,7 @@ function useReveal() {
           observer.unobserve(el);
         }
       },
-      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+      { threshold: 0.1, rootMargin: "0px 0px -30px 0px" }
     );
 
     observer.observe(el);
@@ -26,6 +28,34 @@ function useReveal() {
   }, []);
 
   return ref;
+}
+
+function Reveal({
+  children,
+  from = "up",
+  delay = 0,
+  className = "",
+}: {
+  children: ReactNode;
+  from?: RevealDirection;
+  delay?: number;
+  className?: string;
+}) {
+  const ref = useRevealRef();
+
+  return (
+    <div
+      ref={ref}
+      className={`reveal reveal-from-${from}${className ? ` ${className}` : ""}`}
+      style={delay > 0 ? { transitionDelay: `${delay}ms` } : undefined}
+    >
+      {children}
+    </div>
+  );
+}
+
+function sideFromIndex(index: number): RevealDirection {
+  return index % 2 === 0 ? "left" : "right";
 }
 
 function SectionHeader({
@@ -250,8 +280,6 @@ function HeroSection() {
 }
 
 function BenefitsSection() {
-  const ref = useReveal();
-
   const benefits = [
     { title: "Experiencia Certificada", description: "Personal con años de experiencia en eventos de alta gama" },
     { title: "Protocolo Profesional", description: "Capacitados en etiqueta y servicio de primera clase" },
@@ -263,9 +291,9 @@ function BenefitsSection() {
 
   return (
     <section className="section-padding border-t border-[var(--border)]">
-      <div ref={ref} className="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 lg:gap-24 items-start">
-          <div>
+          <Reveal from="left">
             <SectionHeader
               number="01"
               label="¿Por qué elegirnos?"
@@ -277,22 +305,24 @@ function BenefitsSection() {
               description="Nos comprometemos a brindar un servicio excepcional que supere tus expectativas"
             />
             <TextLink href="#galeria">Ver galería</TextLink>
-          </div>
+          </Reveal>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-10">
             {benefits.map((benefit, index) => (
-              <div key={index} className="group">
-                <span className="text-xs tracking-[0.15em] text-[var(--muted)] mb-3 block">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <h3
-                  className="text-lg text-[var(--foreground)] mb-2 group-hover:text-[var(--gold)] transition-colors duration-300"
-                  style={{ fontFamily: "var(--font-playfair)" }}
-                >
-                  {benefit.title}
-                </h3>
-                <p className="text-sm text-[var(--muted)] leading-relaxed">{benefit.description}</p>
-              </div>
+              <Reveal key={index} from="right" delay={index * 80}>
+                <div className="group">
+                  <span className="text-xs tracking-[0.15em] text-[var(--muted)] mb-3 block">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <h3
+                    className="text-lg text-[var(--foreground)] mb-2 group-hover:text-[var(--gold)] transition-colors duration-300"
+                    style={{ fontFamily: "var(--font-playfair)" }}
+                  >
+                    {benefit.title}
+                  </h3>
+                  <p className="text-sm text-[var(--muted)] leading-relaxed">{benefit.description}</p>
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -302,7 +332,6 @@ function BenefitsSection() {
 }
 
 function ServicesSection() {
-  const ref = useReveal();
   const [openService, setOpenService] = useState<number | null>(null);
 
   const toggleService = (index: number) => {
@@ -356,23 +385,25 @@ function ServicesSection() {
 
   return (
     <section id="servicios" className="section-padding bg-[var(--charcoal)]">
-      <div ref={ref} className="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
-        <SectionHeader
-          number="02"
-          label="Nuestros Servicios"
-          title={
-            <>
-              Soluciones para Cada <span className="text-gradient">Evento</span>
-            </>
-          }
-          description="Servicios adaptados a las necesidades de tu evento"
-        />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+        <Reveal from="left">
+          <SectionHeader
+            number="02"
+            label="Nuestros Servicios"
+            title={
+              <>
+                Soluciones para Cada <span className="text-gradient">Evento</span>
+              </>
+            }
+            description="Servicios adaptados a las necesidades de tu evento"
+          />
+        </Reveal>
 
         <div className="mt-4">
           {services.map((service, index) => (
-            <div
-              key={index}
-              className={`service-item group ${openService === index ? "open" : ""}`}
+            <Reveal key={index} from={sideFromIndex(index)} delay={index * 60}>
+              <div
+                className={`service-item group ${openService === index ? "open" : ""}`}
               onClick={() => toggleService(index)}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
@@ -415,20 +446,19 @@ function ServicesSection() {
                 </div>
               </div>
             </div>
+            </Reveal>
           ))}
         </div>
 
-        <div className="mt-16 pt-8 border-t border-[var(--border)]">
+        <Reveal from="up" delay={200} className="mt-16 pt-8 border-t border-[var(--border)]">
           <TextLink href="#paquetes">Explorar paquetes</TextLink>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
 }
 
 function AdditionalServicesSection() {
-  const ref = useReveal();
-
   const services = [
     {
       title: "Parrillero",
@@ -436,7 +466,7 @@ function AdditionalServicesSection() {
         "Experto en parrilla para tus eventos al aire libre. Preparación de carnes, cortes especiales y servicio en vivo frente a tus invitados.",
       features: ["Parrilla en vivo", "Carnes y cortes premium", "Atención en jardín o terraza"],
       image:
-        "https://images.pexels.com/photos/1059907/pexels-photo-1059907.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/2338407/pexels-photo-2338407.jpeg?auto=compress&cs=tinysrgb&w=800",
       alt: "Parrillero preparando carne en evento",
     },
     {
@@ -461,21 +491,28 @@ function AdditionalServicesSection() {
 
   return (
     <section id="servicios-adicionales" className="section-padding">
-      <div ref={ref} className="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
-        <SectionHeader
-          number="03"
-          label="Servicios Adicionales"
-          title={
-            <>
-              Especialistas para tu <span className="text-gradient">Evento</span>
-            </>
-          }
-          description="Personal capacitado para complementar tu celebración con servicios premium"
-        />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+        <Reveal from="left">
+          <SectionHeader
+            number="03"
+            label="Servicios Adicionales"
+            title={
+              <>
+                Especialistas para tu <span className="text-gradient">Evento</span>
+              </>
+            }
+            description="Personal capacitado para complementar tu celebración con servicios premium"
+          />
+        </Reveal>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-          {services.map((service) => (
-            <article key={service.title} className="card-minimal group overflow-hidden flex flex-col">
+          {services.map((service, index) => (
+            <Reveal
+              key={service.title}
+              from={index === 0 ? "left" : index === 1 ? "up" : "right"}
+              delay={index * 100}
+            >
+              <article className="card-minimal group overflow-hidden flex flex-col h-full">
               <div className="relative aspect-[4/3] overflow-hidden">
                 <img
                   src={service.image}
@@ -512,7 +549,8 @@ function AdditionalServicesSection() {
                   Cotizar {service.title}
                 </a>
               </div>
-            </article>
+              </article>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -521,8 +559,6 @@ function AdditionalServicesSection() {
 }
 
 function PackagesSection() {
-  const ref = useReveal();
-
   const packages = [
     {
       name: "Básico",
@@ -564,23 +600,25 @@ function PackagesSection() {
 
   return (
     <section id="paquetes" className="section-padding">
-      <div ref={ref} className="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
-        <SectionHeader
-          number="04"
-          label="Paquetes"
-          title={
-            <>
-              Elige el Plan <span className="text-gradient">Ideal</span>
-            </>
-          }
-          description="Paquetes para diferentes tipos de eventos"
-        />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+        <Reveal from="right">
+          <SectionHeader
+            number="04"
+            label="Paquetes"
+            title={
+              <>
+                Elige el Plan <span className="text-gradient">Ideal</span>
+              </>
+            }
+            description="Paquetes para diferentes tipos de eventos"
+          />
+        </Reveal>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
           {packages.map((pkg, index) => (
-            <div
-              key={index}
-              className={`card-minimal p-6 sm:p-8 md:p-10 flex flex-col ${
+            <Reveal key={index} from={index === 0 ? "left" : index === 1 ? "up" : "right"} delay={index * 100}>
+              <div
+                className={`card-minimal p-6 sm:p-8 md:p-10 flex flex-col h-full ${
                 pkg.popular ? "border-[var(--gold)]/40 bg-[var(--charcoal)] md:order-none order-first" : ""
               }`}
             >
@@ -617,7 +655,8 @@ function PackagesSection() {
               >
                 Solicitar Cotización
               </a>
-            </div>
+              </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -638,9 +677,9 @@ function StatsSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <div className="grid grid-cols-2 md:grid-cols-4 py-8 sm:py-12 md:py-16 gap-y-6">
           {stats.map((stat, index) => (
-            <div
-              key={index}
-              className={`text-center px-2 sm:px-4 ${
+            <Reveal key={index} from={index < 2 ? "left" : "right"} delay={index * 80}>
+              <div
+                className={`text-center px-2 sm:px-4 ${
                 index % 2 === 1 ? "border-l border-[var(--border)]" : ""
               } ${index > 1 ? "md:border-l md:border-[var(--border)]" : ""} ${
                 index >= 2 ? "border-t border-[var(--border)] pt-6 md:border-t-0 md:pt-0" : ""
@@ -653,7 +692,8 @@ function StatsSection() {
                 {stat.number}
               </div>
               <div className="text-xs tracking-[0.2em] uppercase text-[var(--muted)]">{stat.label}</div>
-            </div>
+              </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -662,8 +702,6 @@ function StatsSection() {
 }
 
 function TestimonialsSection() {
-  const ref = useReveal();
-
   const testimonials = [
     {
       name: "María García",
@@ -693,21 +731,24 @@ function TestimonialsSection() {
 
   return (
     <section id="testimonios" className="section-padding bg-[var(--charcoal)]">
-      <div ref={ref} className="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
-        <SectionHeader
-          number="05"
-          label="Testimonios"
-          title={
-            <>
-              Lo que Dicen <span className="text-gradient">Nuestros Clientes</span>
-            </>
-          }
-          description="La satisfacción de nuestros clientes es nuestra mayor recompensa"
-        />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+        <Reveal from="left">
+          <SectionHeader
+            number="05"
+            label="Testimonios"
+            title={
+              <>
+                Lo que Dicen <span className="text-gradient">Nuestros Clientes</span>
+              </>
+            }
+            description="La satisfacción de nuestros clientes es nuestra mayor recompensa"
+          />
+        </Reveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
           {testimonials.map((testimonial, index) => (
-            <article key={index} className="card-minimal p-6 sm:p-8 md:p-10">
+            <Reveal key={index} from={sideFromIndex(index)} delay={index * 100}>
+              <article className="card-minimal p-6 sm:p-8 md:p-10 h-full">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 sm:mb-8">
                 <div>
                   <h4 className="text-[var(--foreground)] font-medium text-sm sm:text-base">{testimonial.name}</h4>
@@ -720,29 +761,31 @@ function TestimonialsSection() {
                 </div>
               </div>
               <p className="text-sm sm:text-base text-[var(--muted)] leading-[1.85] italic">&ldquo;{testimonial.text}&rdquo;</p>
-            </article>
+              </article>
+            </Reveal>
           ))}
         </div>
 
-        <div className="mt-12 sm:mt-20 pt-10 sm:pt-16 border-t border-[var(--border)]">
+        <Reveal from="up" delay={150} className="mt-12 sm:mt-20 pt-10 sm:pt-16 border-t border-[var(--border)]">
           <p className="text-[10px] sm:text-xs tracking-[0.2em] uppercase text-[var(--muted)] mb-6 sm:mb-10 text-center">
             Empresas que confían en nosotros
           </p>
           <div className="flex flex-wrap justify-center items-center gap-x-6 sm:gap-x-12 gap-y-4">
             {["EMPRESA 1", "EMPRESA 2", "EMPRESA 3", "EMPRESA 4", "EMPRESA 5"].map((company, index) => (
-              <div key={index} className="text-[var(--muted)] text-xs sm:text-sm tracking-[0.1em] sm:tracking-[0.15em] uppercase">
-                {company}
-              </div>
+              <Reveal key={index} from={sideFromIndex(index)} delay={index * 60}>
+                <div className="text-[var(--muted)] text-xs sm:text-sm tracking-[0.1em] sm:tracking-[0.15em] uppercase">
+                  {company}
+                </div>
+              </Reveal>
             ))}
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
 }
 
 function GallerySection() {
-  const ref = useReveal();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
@@ -771,18 +814,21 @@ function GallerySection() {
 
   return (
     <section id="galeria" className="section-padding">
-      <div ref={ref} className="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
-        <SectionHeader
-          number="06"
-          label="Galería"
-          title={
-            <>
-              Momentos que <span className="text-gradient">Capturamos</span>
-            </>
-          }
-          description="Cada evento es una oportunidad para crear experiencias memorables"
-        />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+        <Reveal from="right">
+          <SectionHeader
+            number="06"
+            label="Galería"
+            title={
+              <>
+                Momentos que <span className="text-gradient">Capturamos</span>
+              </>
+            }
+            description="Cada evento es una oportunidad para crear experiencias memorables"
+          />
+        </Reveal>
 
+        <Reveal from="left" delay={100}>
         <div className="relative aspect-[4/3] sm:aspect-[16/9] md:aspect-[21/9] overflow-hidden mb-4 sm:mb-6 -mx-4 sm:mx-0">
           {images.map((image, index) => (
             <div
@@ -821,7 +867,9 @@ function GallerySection() {
             </svg>
           </button>
         </div>
+        </Reveal>
 
+        <Reveal from="right" delay={150}>
         <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
           {images.map((image, index) => (
             <button
@@ -836,6 +884,7 @@ function GallerySection() {
             </button>
           ))}
         </div>
+        </Reveal>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mt-10 sm:mt-16 pt-10 sm:pt-16 border-t border-[var(--border)]">
           {[
@@ -844,12 +893,14 @@ function GallerySection() {
             { number: "100%", label: "Eventos Documentados" },
             { number: "5⭐", label: "Calificación Promedio" },
           ].map((stat, index) => (
-            <div key={index} className="text-center px-1">
-              <div className="text-xl sm:text-2xl md:text-3xl text-[var(--foreground)] mb-1" style={{ fontFamily: "var(--font-playfair)" }}>
-                {stat.number}
+            <Reveal key={index} from={sideFromIndex(index)} delay={index * 80}>
+              <div className="text-center px-1">
+                <div className="text-xl sm:text-2xl md:text-3xl text-[var(--foreground)] mb-1" style={{ fontFamily: "var(--font-playfair)" }}>
+                  {stat.number}
+                </div>
+                <div className="text-[10px] sm:text-xs tracking-[0.1em] sm:tracking-[0.15em] uppercase text-[var(--muted)] leading-snug">{stat.label}</div>
               </div>
-              <div className="text-[10px] sm:text-xs tracking-[0.1em] sm:tracking-[0.15em] uppercase text-[var(--muted)] leading-snug">{stat.label}</div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -858,8 +909,6 @@ function GallerySection() {
 }
 
 function ProcessSection() {
-  const ref = useReveal();
-
   const steps = [
     { number: "01", title: "Solicita Cotización", description: "Contáctanos por WhatsApp o formulario con los detalles de tu evento" },
     { number: "02", title: "Confirmamos Disponibilidad", description: "Verificamos fecha, horario y asignamos el equipo ideal para tu evento" },
@@ -869,30 +918,34 @@ function ProcessSection() {
 
   return (
     <section id="proceso" className="section-padding bg-[var(--charcoal)]">
-      <div ref={ref} className="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
-        <SectionHeader
-          number="07"
-          label="Proceso"
-          title={
-            <>
-              ¿Cómo <span className="text-gradient">Funciona?</span>
-            </>
-          }
-          description="Contratar nuestros servicios es fácil y rápido"
-        />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+        <Reveal from="right">
+          <SectionHeader
+            number="07"
+            label="Proceso"
+            title={
+              <>
+                ¿Cómo <span className="text-gradient">Funciona?</span>
+              </>
+            }
+            description="Contratar nuestros servicios es fácil y rápido"
+          />
+        </Reveal>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-12">
           {steps.map((step, index) => (
-            <div key={index} className="group border-t border-[var(--border)] pt-6 sm:border-0 sm:pt-0">
-              <span className="section-number block mb-4 sm:mb-6">{step.number}{"//"}</span>
-              <h3
-                className="text-lg sm:text-xl text-[var(--foreground)] mb-3 sm:mb-4 group-hover:text-[var(--gold)] transition-colors duration-300"
-                style={{ fontFamily: "var(--font-playfair)" }}
-              >
-                {step.title}
-              </h3>
-              <p className="text-sm text-[var(--muted)] leading-relaxed">{step.description}</p>
-            </div>
+            <Reveal key={index} from={index % 2 === 0 ? "left" : "right"} delay={index * 100}>
+              <div className="group border-t border-[var(--border)] pt-6 sm:border-0 sm:pt-0 h-full">
+                <span className="section-number block mb-4 sm:mb-6">{step.number}{"//"}</span>
+                <h3
+                  className="text-lg sm:text-xl text-[var(--foreground)] mb-3 sm:mb-4 group-hover:text-[var(--gold)] transition-colors duration-300"
+                  style={{ fontFamily: "var(--font-playfair)" }}
+                >
+                  {step.title}
+                </h3>
+                <p className="text-sm text-[var(--muted)] leading-relaxed">{step.description}</p>
+              </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -901,7 +954,6 @@ function ProcessSection() {
 }
 
 function FAQSection() {
-  const ref = useReveal();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const toggleFaq = (index: number) => {
@@ -922,24 +974,26 @@ function FAQSection() {
 
   return (
     <section className="section-padding">
-      <div ref={ref} className="reveal max-w-3xl mx-auto px-4 sm:px-6 lg:px-10">
-        <SectionHeader
-          number="08"
-          label="FAQ"
-          title={
-            <>
-              Preguntas <span className="text-gradient">Frecuentes</span>
-            </>
-          }
-          description="Resolvemos tus dudas más comunes"
-          align="center"
-        />
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-10">
+        <Reveal from="up">
+          <SectionHeader
+            number="08"
+            label="FAQ"
+            title={
+              <>
+                Preguntas <span className="text-gradient">Frecuentes</span>
+              </>
+            }
+            description="Resolvemos tus dudas más comunes"
+            align="center"
+          />
+        </Reveal>
 
         <div className="border-t border-[var(--border)]">
           {faqs.map((faq, index) => (
-            <div
-              key={index}
-              className={`faq-item group ${openIndex === index ? "open" : ""}`}
+            <Reveal key={index} from={sideFromIndex(index)} delay={index * 50}>
+              <div
+                className={`faq-item group ${openIndex === index ? "open" : ""}`}
               onClick={() => toggleFaq(index)}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
@@ -967,6 +1021,7 @@ function FAQSection() {
                 </div>
               </div>
             </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -975,7 +1030,6 @@ function FAQSection() {
 }
 
 function ContactSection() {
-  const ref = useReveal();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -1002,20 +1056,23 @@ function ContactSection() {
 
   return (
     <section id="contacto" className="section-padding bg-[var(--charcoal)] border-t border-[var(--border)]">
-      <div ref={ref} className="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
-        <SectionHeader
-          number="09"
-          label="Contacto"
-          title={
-            <>
-              Reserva tu <span className="text-gradient">Fecha</span>
-            </>
-          }
-          description="Contáctanos hoy y asegura el servicio para tu próximo evento"
-        />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+        <Reveal from="left">
+          <SectionHeader
+            number="09"
+            label="Contacto"
+            title={
+              <>
+                Reserva tu <span className="text-gradient">Fecha</span>
+              </>
+            }
+            description="Contáctanos hoy y asegura el servicio para tu próximo evento"
+          />
+        </Reveal>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-20">
-          <div className="lg:col-span-5 space-y-8 sm:space-y-12">
+          <Reveal from="left" delay={100} className="lg:col-span-5">
+            <div className="space-y-8 sm:space-y-12">
             <div>
               <h3 className="text-xs tracking-[0.2em] uppercase text-[var(--muted)] mb-4 sm:mb-6">Visítanos</h3>
               <p className="text-xl sm:text-2xl text-[var(--foreground)] mb-3 sm:mb-4" style={{ fontFamily: "var(--font-playfair)" }}>
@@ -1051,9 +1108,11 @@ function ContactSection() {
                 ))}
               </div>
             </div>
-          </div>
+            </div>
+          </Reveal>
 
-          <form onSubmit={handleSubmit} className="lg:col-span-7 pt-6 lg:pt-0 border-t lg:border-t-0 border-[var(--border)]">
+          <Reveal from="right" delay={150} className="lg:col-span-7">
+          <form onSubmit={handleSubmit} className="pt-6 lg:pt-0 border-t lg:border-t-0 border-[var(--border)]">
             <h3 className="text-xs tracking-[0.2em] uppercase text-[var(--muted)] mb-6 sm:mb-8">Solicita tu Cotización</h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
@@ -1136,6 +1195,7 @@ function ContactSection() {
               Enviar Cotización por WhatsApp
             </button>
           </form>
+          </Reveal>
         </div>
       </div>
     </section>
@@ -1156,7 +1216,8 @@ function Footer() {
     <footer className="py-12 sm:py-16 md:py-20 border-t border-[var(--border)] pb-24 sm:pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-8 sm:gap-12 mb-12 sm:mb-16">
-          <div className="md:col-span-5 sm:col-span-2">
+          <Reveal from="left" className="md:col-span-5 sm:col-span-2">
+          <div>
             <span className="text-lg sm:text-xl text-[var(--foreground)]" style={{ fontFamily: "var(--font-playfair)" }}>
               {CONTACT.name}
             </span>
@@ -1165,8 +1226,10 @@ function Footer() {
               Experiencia, puntualidad y excelencia en cada celebración.
             </p>
           </div>
+          </Reveal>
 
-          <div className="md:col-span-3">
+          <Reveal from="right" delay={80} className="md:col-span-3">
+          <div>
             <h4 className="text-xs tracking-[0.2em] uppercase text-[var(--muted)] mb-6">Enlaces</h4>
             <ul className="space-y-3">
               {footerLinks.map((link) => (
@@ -1178,8 +1241,10 @@ function Footer() {
               ))}
             </ul>
           </div>
+          </Reveal>
 
-          <div className="md:col-span-4">
+          <Reveal from="left" delay={160} className="md:col-span-4">
+          <div>
             <h4 className="text-xs tracking-[0.2em] uppercase text-[var(--muted)] mb-6">Contacto</h4>
             <ul className="space-y-3 text-sm text-[var(--muted)]">
               <li>{CONTACT.name}</li>
@@ -1187,8 +1252,10 @@ function Footer() {
               <li>Zona metropolitana de Guadalajara</li>
             </ul>
           </div>
+          </Reveal>
         </div>
 
+        <Reveal from="up" delay={100}>
         <div className="pt-6 sm:pt-8 border-t border-[var(--border)] flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
           <p className="text-[10px] sm:text-xs text-[var(--muted)] tracking-wide">
             © {new Date().getFullYear()} {CONTACT.name}. Todos los derechos reservados.
@@ -1202,6 +1269,7 @@ function Footer() {
             </Link>
           </div>
         </div>
+        </Reveal>
       </div>
     </footer>
   );
