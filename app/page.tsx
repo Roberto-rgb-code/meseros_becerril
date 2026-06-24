@@ -968,28 +968,24 @@ function TestimonialsSection() {
     {
       name: "María García",
       event: "Boda",
-      image: MEDIA.testimonials.Boda,
       text: "Excelente servicio, el equipo fue muy profesional y atento. Todos mis invitados quedaron encantados con la atención. Sin duda los recomiendo para cualquier evento.",
       rating: 5,
     },
     {
       name: "Carlos Rodríguez",
       event: "Evento Corporativo",
-      image: MEDIA.testimonials["Evento Corporativo"],
       text: "Contratamos sus servicios para nuestra cena de fin de año y superaron nuestras expectativas. Puntuales, profesionales y muy atentos a cada detalle.",
       rating: 5,
     },
     {
       name: "Ana Martínez",
       event: "XV Años",
-      image: MEDIA.testimonials["XV Años"],
       text: "Los meseros fueron increíbles, muy atentos y profesionales. Hicieron que la fiesta de mi hija fuera perfecta. El capitán coordinó todo a la perfección.",
       rating: 5,
     },
     {
       name: "Roberto Sánchez",
       event: "Bautizo",
-      image: MEDIA.testimonials.Bautizo,
       text: "Servicio de primera calidad. El montaje quedó hermoso y el equipo fue muy amable con todos nuestros invitados. Definitivamente volveremos a contratarlos.",
       rating: 5,
     },
@@ -1014,15 +1010,7 @@ function TestimonialsSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
           {testimonials.map((testimonial, index) => (
             <Reveal key={index} from={sideFromIndex(index)} delay={index * 100}>
-              <article className="card-minimal overflow-hidden h-full flex flex-col">
-              <EditorialPhoto
-                src={testimonial.image.src}
-                alt={`Evento de ${testimonial.event} — testimonio de ${testimonial.name}`}
-                category={testimonial.event}
-                className="testimonial-photo border-0"
-                variant="ambient"
-              />
-              <div className="p-6 sm:p-8 md:p-10 flex flex-col flex-grow">
+              <article className="card-minimal p-6 sm:p-8 md:p-10 h-full flex flex-col">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 sm:mb-8">
                 <div>
                   <h4 className="text-[var(--foreground)] font-medium text-base sm:text-lg">{testimonial.name}</h4>
@@ -1035,7 +1023,6 @@ function TestimonialsSection() {
                 </div>
               </div>
               <p className="text-base sm:text-lg text-[var(--muted)] leading-[1.85] italic flex-grow">&ldquo;{testimonial.text}&rdquo;</p>
-              </div>
               </article>
             </Reveal>
           ))}

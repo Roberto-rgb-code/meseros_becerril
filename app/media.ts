@@ -92,12 +92,6 @@ export const MEDIA = {
   stats: {
     background: PHOTOS.menuBanquete,
   },
-  testimonials: {
-    Boda: PHOTOS.bodaPadrinhos,
-    "Evento Corporativo": PHOTOS.menuBanquete,
-    "XV Años": PHOTOS.sillaReservado,
-    Bautizo: PHOTOS.felicidades,
-  },
   process: {
     "Solicita Cotización": PHOTOS.mesaReservado,
     "Confirmamos Disponibilidad": PHOTOS.sillaReservado,
