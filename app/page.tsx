@@ -126,23 +126,6 @@ function TextLink({
   );
 }
 
-function SectionVideoBanner({
-  src,
-  className = "min-h-[38vh] sm:min-h-[44vh]",
-}: {
-  src: string;
-  className?: string;
-}) {
-  return (
-    <div className={`relative overflow-hidden pointer-events-none border border-[var(--border)] ${className}`}>
-      <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover pointer-events-none">
-        <source src={src} type="video/mp4" />
-      </video>
-      <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)]/40 via-transparent to-[var(--background)]/10 pointer-events-none" />
-    </div>
-  );
-}
-
 function EditorialPhoto({
   src,
   alt,
@@ -451,10 +434,6 @@ function BenefitsSection() {
           />
         </Reveal>
 
-        <Reveal from="up" delay={80} className="my-10 md:my-14">
-          <SectionVideoBanner src={MEDIA.benefits.video} className="min-h-[24vh] sm:min-h-[30vh]" />
-        </Reveal>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 lg:gap-20 items-start">
           <Reveal from="left" delay={100}>
             <div className="benefits-photo-stack mb-10 lg:mb-0">
@@ -570,11 +549,7 @@ function ServicesSection() {
           />
         </Reveal>
 
-        <Reveal from="up" delay={80} className="mb-8 md:mb-10">
-          <SectionVideoBanner src={MEDIA.services.bannerVideo} className="min-h-[28vh] sm:min-h-[34vh]" />
-        </Reveal>
-
-        <Reveal from="up" delay={120} className="mb-10 md:mb-14">
+        <Reveal from="up" delay={80} className="mb-10 md:mb-14">
           <PhotoFilmstrip photos={MEDIA.services.showcase} />
         </Reveal>
 
@@ -675,10 +650,6 @@ function AdditionalServicesSection() {
             }
             description="Personal capacitado para complementar tu celebración con servicios premium"
           />
-        </Reveal>
-
-        <Reveal from="up" delay={60} className="my-10 md:my-14">
-          <SectionVideoBanner src={MEDIA.additionalServices.bannerVideo} className="min-h-[28vh] sm:min-h-[36vh]" />
         </Reveal>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
@@ -1358,10 +1329,6 @@ function ContactSection() {
           />
         </Reveal>
 
-        <Reveal from="up" delay={80} className="mb-10 md:mb-14">
-          <SectionVideoBanner src={MEDIA.contact.video} className="min-h-[28vh] sm:min-h-[34vh]" />
-        </Reveal>
-
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-20">
           <Reveal from="left" delay={100} className="lg:col-span-5">
             <div className="space-y-8 sm:space-y-12">
@@ -1594,6 +1561,13 @@ function WhatsAppButton() {
 }
 
 export default function Home() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (window.location.hash) {
+      window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+  }, []);
+
   return (
     <>
       <Navbar />

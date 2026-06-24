@@ -1,6 +1,3 @@
-const pexelsVideo = (id: number, quality = "hd_1920_1080_25fps") =>
-  `https://videos.pexels.com/video-files/${id}/${id}-${quality}.mp4`;
-
 const local = (filename: string) => `/nuevas_fotos/${filename}`;
 
 export type PhotoItem = {
@@ -67,10 +64,8 @@ export const MEDIA = {
   benefits: {
     hero: PHOTOS.bodaPadrinhos,
     accent: PHOTOS.felicidades,
-    video: pexelsVideo(4763824),
   },
   services: {
-    bannerVideo: pexelsVideo(7578616),
     showcase: [
       PHOTOS.mesaReservado,
       PHOTOS.sillaReservado,
@@ -79,7 +74,6 @@ export const MEDIA = {
     ],
   },
   additionalServices: {
-    bannerVideo: pexelsVideo(3196277),
     Parrillero: PHOTOS.mesaReservado,
     Bartender: PHOTOS.margarita,
     Mixólogo: PHOTOS.coctelPremium,
@@ -103,7 +97,6 @@ export const MEDIA = {
   },
   contact: {
     side: PHOTOS.felicidades,
-    video: pexelsVideo(3254066),
   },
   gallery: GALLERY,
 } as const;

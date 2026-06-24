@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Montserrat } from "next/font/google";
-import "./globals.css";
+import Script from "next/script";
+import { Playfair_Display, Montserrat } from "next/font/google";import "./globals.css";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -39,8 +39,10 @@ export default function RootLayout({
       <body
         className={`${playfair.variable} ${montserrat.variable} antialiased`}
       >
+        <Script id="reset-scroll-on-load" strategy="beforeInteractive">
+          {`(function(){try{history.scrollRestoration='manual';if(location.hash){history.replaceState(null,'',location.pathname+location.search);}window.scrollTo(0,0);}catch(e){}})();`}
+        </Script>
         {children}
-      </body>
-    </html>
+      </body>    </html>
   );
 }
