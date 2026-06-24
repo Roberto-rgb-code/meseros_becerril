@@ -36,12 +36,26 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  font-size: 18px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 19px;
+  }
+}
+
+@media (min-width: 1024px) {
+  html {
+    font-size: 20px;
+  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-montserrat), system-ui, sans-serif;
+  font-size: 1rem;
   font-weight: 300;
   letter-spacing: 0.01em;
   overflow-x: hidden;
@@ -132,7 +146,7 @@ h1, h2, h3, h4 {
 
 .section-number {
   font-family: var(--font-montserrat), sans-serif;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 400;
   letter-spacing: 0.15em;
   color: var(--muted);
@@ -140,7 +154,7 @@ h1, h2, h3, h4 {
 
 .section-label {
   font-family: var(--font-montserrat), sans-serif;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 400;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -149,7 +163,7 @@ h1, h2, h3, h4 {
 
 .section-title {
   font-family: var(--font-playfair), Georgia, serif;
-  font-size: clamp(1.75rem, 6vw, 3.5rem);
+  font-size: clamp(2rem, 7vw, 4.25rem);
   font-weight: 400;
   line-height: 1.15;
   color: var(--foreground);
@@ -157,10 +171,10 @@ h1, h2, h3, h4 {
 }
 
 .section-description {
-  font-size: clamp(0.875rem, 2.5vw, 1rem);
+  font-size: clamp(1rem, 2.8vw, 1.1875rem);
   line-height: 1.75;
   color: var(--muted);
-  max-width: 36rem;
+  max-width: 40rem;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
@@ -170,7 +184,7 @@ h1, h2, h3, h4 {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.8125rem;
+  font-size: 0.9375rem;
   font-weight: 400;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -263,7 +277,7 @@ h1, h2, h3, h4 {
 }
 
 .nav-link {
-  font-size: 0.8125rem;
+  font-size: 0.9375rem;
   font-weight: 400;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -513,6 +527,7 @@ h1, h2, h3, h4 {
 
 input, textarea, select {
   font-family: var(--font-montserrat), sans-serif;
+  font-size: 1rem;
 }
 
 input:focus, textarea:focus {

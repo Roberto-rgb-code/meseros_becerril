@@ -189,7 +189,7 @@ function Navbar() {
         <div
           id="mobile-menu"
           className="md:hidden fixed inset-0 z-[9998] bg-[var(--background)]"
-          style={{ paddingTop: "calc(4.5rem + env(safe-area-inset-top, 0px))" }}
+          style={{ paddingTop: "calc(5rem + env(safe-area-inset-top, 0px))" }}
         >
           <div className="h-full overflow-y-auto overscroll-contain">
             <div className="flex flex-col gap-2 px-4 sm:px-6 py-6 pb-24">
@@ -197,7 +197,7 @@ function Navbar() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="nav-link text-base py-4 border-b border-[var(--border)]"
+                  className="nav-link text-lg py-4 border-b border-[var(--border)]"
                   onClick={(e) => {
                     e.preventDefault();
                     isNavigatingRef.current = true;
@@ -212,7 +212,7 @@ function Navbar() {
                 href={`https://wa.me/${CONTACT.whatsapp}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-link !text-[var(--gold)] text-base mt-4 py-2"
+                className="text-link !text-[var(--gold)] text-lg mt-4 py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Cotizar Ahora
@@ -259,7 +259,7 @@ function Navbar() {
           <div className="flex flex-col items-center text-center min-h-11 md:min-h-0">
             <a href="#" className="group inline-block max-w-full px-12 md:px-0">
               <span
-                className="block text-2xl sm:text-3xl md:text-4xl tracking-wide text-[var(--foreground)] group-hover:text-[var(--gold)] transition-colors duration-300"
+                className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-wide text-[var(--foreground)] group-hover:text-[var(--gold)] transition-colors duration-300"
                 style={{ fontFamily: "var(--font-playfair)" }}
               >
                 {CONTACT.name}
@@ -299,20 +299,20 @@ function HeroSection() {
       <div className="absolute inset-0 hero-mobile-overlay md:hidden pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 w-full pb-12 sm:pb-16 md:pb-24 pt-24 sm:pt-32 hero-text-shadow md:[text-shadow:none] pointer-events-auto">
-        <p className="text-[10px] sm:text-xs md:text-sm tracking-[0.15em] sm:tracking-[0.2em] uppercase text-[var(--muted)] mb-6 sm:mb-8 animate-fade-in-up">
+        <p className="text-base sm:text-lg md:text-lg tracking-[0.15em] sm:tracking-[0.2em] uppercase text-[var(--muted)] mb-6 sm:mb-8 animate-fade-in-up">
           Servicio profesional de meseros en la zona metropolitana de Guadalajara
         </p>
 
         <div className="max-w-4xl">
           <span
-            className="inline-block text-[10px] sm:text-xs tracking-[0.15em] sm:tracking-[0.2em] uppercase text-[var(--gold)] mb-4 sm:mb-6 animate-fade-in-up opacity-0"
+            className="inline-block text-base sm:text-lg tracking-[0.15em] sm:tracking-[0.2em] uppercase text-[var(--gold)] mb-4 sm:mb-6 animate-fade-in-up opacity-0"
             style={{ animationDelay: "0.15s", animationFillMode: "forwards" }}
           >
             ✨ +350 Eventos Exitosos
           </span>
 
           <h1
-            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-[var(--foreground)] mb-6 sm:mb-8 leading-[1.1] animate-fade-in-up opacity-0"
+            className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-[var(--foreground)] mb-6 sm:mb-8 leading-[1.1] animate-fade-in-up opacity-0"
             style={{ fontFamily: "var(--font-playfair)", animationDelay: "0.25s", animationFillMode: "forwards" }}
           >
             Meseros <span className="text-gradient">Profesionales</span>
@@ -321,7 +321,7 @@ function HeroSection() {
           </h1>
 
           <p
-            className="text-sm sm:text-base md:text-lg text-[var(--muted)] max-w-xl mb-8 sm:mb-10 leading-relaxed animate-fade-in-up opacity-0"
+            className="text-base sm:text-lg md:text-xl text-[var(--muted)] max-w-xl mb-8 sm:mb-10 leading-relaxed animate-fade-in-up opacity-0"
             style={{ animationDelay: "0.35s", animationFillMode: "forwards" }}
           >
             Personal capacitado, uniformado y con experiencia en protocolo.
@@ -346,7 +346,7 @@ function HeroSection() {
           </div>
 
           <p
-            className="mt-8 sm:mt-12 text-[10px] sm:text-xs tracking-[0.12em] sm:tracking-[0.15em] uppercase text-[var(--muted)] animate-fade-in-up opacity-0"
+            className="mt-8 sm:mt-12 text-base sm:text-lg tracking-[0.12em] sm:tracking-[0.15em] uppercase text-[var(--muted)] animate-fade-in-up opacity-0"
             style={{ animationDelay: "0.55s", animationFillMode: "forwards" }}
           >
             Disponibles fines de semana y días festivos
@@ -391,16 +391,16 @@ function BenefitsSection() {
             {benefits.map((benefit, index) => (
               <Reveal key={index} from="right" delay={index * 80}>
                 <div className="group">
-                  <span className="text-xs tracking-[0.15em] text-[var(--muted)] mb-3 block">
+                  <span className="text-sm tracking-[0.15em] text-[var(--muted)] mb-3 block">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <h3
-                    className="text-lg text-[var(--foreground)] mb-2 group-hover:text-[var(--gold)] transition-colors duration-300"
+                    className="text-xl text-[var(--foreground)] mb-2 group-hover:text-[var(--gold)] transition-colors duration-300"
                     style={{ fontFamily: "var(--font-playfair)" }}
                   >
                     {benefit.title}
                   </h3>
-                  <p className="text-sm text-[var(--muted)] leading-relaxed">{benefit.description}</p>
+                  <p className="text-base text-[var(--muted)] leading-relaxed">{benefit.description}</p>
                 </div>
               </Reveal>
             ))}
@@ -495,7 +495,7 @@ function ServicesSection() {
             >
               <div className="flex items-start sm:items-center justify-between gap-4 py-5 sm:py-6 md:py-8">
                 <h3
-                  className="text-lg sm:text-xl md:text-2xl text-[var(--foreground)] group-hover:text-[var(--gold)] transition-colors duration-300 pr-2"
+                  className="text-lg sm:text-xl md:text-3xl text-[var(--foreground)] group-hover:text-[var(--gold)] transition-colors duration-300 pr-2"
                   style={{ fontFamily: "var(--font-playfair)" }}
                 >
                   {service.title}
@@ -509,12 +509,12 @@ function ServicesSection() {
                 <div className="service-item-inner">
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-8 pb-5 sm:pb-6 md:pb-8">
                     <div className="md:col-span-7">
-                      <p className="text-sm sm:text-base text-[var(--muted)] leading-relaxed">{service.description}</p>
+                      <p className="text-base sm:text-lg text-[var(--muted)] leading-relaxed">{service.description}</p>
                     </div>
                     <div className="md:col-span-5 mt-2 md:mt-0">
                       <ul className="space-y-1.5">
                         {service.features.map((feature, idx) => (
-                          <li key={idx} className="text-[10px] sm:text-xs tracking-wide text-[var(--muted)] uppercase">
+                          <li key={idx} className="text-sm sm:text-sm tracking-wide text-[var(--muted)] uppercase">
                             {feature}
                           </li>
                         ))}
@@ -608,12 +608,12 @@ function AdditionalServicesSection() {
               </div>
 
               <div className="p-6 sm:p-8 flex flex-col flex-grow">
-                <p className="text-sm text-[var(--muted)] leading-relaxed mb-6 flex-grow">
+                <p className="text-base text-[var(--muted)] leading-relaxed mb-6 flex-grow">
                   {service.description}
                 </p>
                 <ul className="space-y-2 mb-6">
                   {service.features.map((feature) => (
-                    <li key={feature} className="text-[10px] sm:text-xs tracking-wide text-[var(--muted)] uppercase">
+                    <li key={feature} className="text-sm sm:text-sm tracking-wide text-[var(--muted)] uppercase">
                       — {feature}
                     </li>
                   ))}
@@ -622,7 +622,7 @@ function AdditionalServicesSection() {
                   href={`https://wa.me/${CONTACT.whatsapp}?text=Hola,%20me%20interesa%20contratar%20${encodeURIComponent(service.title)}%20para%20mi%20evento`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-link text-xs"
+                  className="text-link text-sm"
                 >
                   Cotizar {service.title}
                 </a>
@@ -701,20 +701,20 @@ function PackagesSection() {
               }`}
             >
               {pkg.popular && (
-                <span className="text-xs tracking-[0.2em] uppercase text-[var(--gold)] mb-6">Más Popular</span>
+                <span className="text-sm tracking-[0.2em] uppercase text-[var(--gold)] mb-6">Más Popular</span>
               )}
               <h3
-                className="text-2xl md:text-3xl text-[var(--foreground)] mb-1"
+                className="text-3xl md:text-4xl text-[var(--foreground)] mb-1"
                 style={{ fontFamily: "var(--font-playfair)" }}
               >
                 {pkg.name}
               </h3>
-              <p className="text-sm tracking-wide text-[var(--gold)] mb-6">{pkg.subtitle}</p>
-              <p className="text-[var(--muted)] text-sm leading-relaxed mb-8">{pkg.description}</p>
+              <p className="text-base tracking-wide text-[var(--gold)] mb-6">{pkg.subtitle}</p>
+              <p className="text-[var(--muted)] text-base leading-relaxed mb-8">{pkg.description}</p>
 
               <ul className="space-y-3 mb-10 flex-grow">
                 {pkg.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-start gap-3 text-sm text-[var(--muted)]">
+                  <li key={idx} className="flex items-start gap-3 text-base text-[var(--muted)]">
                     <span className="text-[var(--gold)] mt-0.5">—</span>
                     {feature}
                   </li>
@@ -725,7 +725,7 @@ function PackagesSection() {
                 href={`https://wa.me/${CONTACT.whatsapp}?text=Hola,%20me%20interesa%20el%20paquete%20${pkg.name}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`text-center py-3.5 text-xs tracking-[0.15em] uppercase transition-all duration-300 ${
+                className={`text-center py-3.5 text-sm tracking-[0.15em] uppercase transition-all duration-300 ${
                   pkg.popular
                     ? "bg-[var(--gold)] text-[var(--background)] hover:bg-[var(--gold-light)]"
                     : "btn-outline text-[var(--foreground)]"
@@ -764,12 +764,12 @@ function StatsSection() {
               }`}
             >
               <div
-                className="text-2xl sm:text-3xl md:text-5xl text-[var(--foreground)] mb-1 sm:mb-2"
+                className="text-3xl sm:text-4xl md:text-6xl text-[var(--foreground)] mb-1 sm:mb-2"
                 style={{ fontFamily: "var(--font-playfair)" }}
               >
                 {stat.number}
               </div>
-              <div className="text-xs tracking-[0.2em] uppercase text-[var(--muted)]">{stat.label}</div>
+              <div className="text-sm tracking-[0.2em] uppercase text-[var(--muted)]">{stat.label}</div>
               </div>
             </Reveal>
           ))}
@@ -829,8 +829,8 @@ function TestimonialsSection() {
               <article className="card-minimal p-6 sm:p-8 md:p-10 h-full">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 sm:mb-8">
                 <div>
-                  <h4 className="text-[var(--foreground)] font-medium text-sm sm:text-base">{testimonial.name}</h4>
-                  <p className="text-[10px] sm:text-xs tracking-[0.15em] uppercase text-[var(--gold)] mt-1">{testimonial.event}</p>
+                  <h4 className="text-[var(--foreground)] font-medium text-base sm:text-lg">{testimonial.name}</h4>
+                  <p className="text-sm sm:text-sm tracking-[0.15em] uppercase text-[var(--gold)] mt-1">{testimonial.event}</p>
                 </div>
                 <div className="flex gap-0.5">
                   {[...Array(testimonial.rating)].map((_, i) => (
@@ -838,14 +838,14 @@ function TestimonialsSection() {
                   ))}
                 </div>
               </div>
-              <p className="text-sm sm:text-base text-[var(--muted)] leading-[1.85] italic">&ldquo;{testimonial.text}&rdquo;</p>
+              <p className="text-base sm:text-lg text-[var(--muted)] leading-[1.85] italic">&ldquo;{testimonial.text}&rdquo;</p>
               </article>
             </Reveal>
           ))}
         </div>
 
         <Reveal from="up" delay={150} className="mt-12 sm:mt-20 pt-10 sm:pt-16 border-t border-[var(--border)]">
-          <p className="text-[10px] sm:text-xs tracking-[0.2em] uppercase text-[var(--muted)] mb-6 sm:mb-10 text-center">
+          <p className="text-sm sm:text-sm tracking-[0.2em] uppercase text-[var(--muted)] mb-6 sm:mb-10 text-center">
             Empresas que confían en nosotros
           </p>
           <div className="flex flex-wrap justify-center items-center gap-x-6 sm:gap-x-12 gap-y-4">
@@ -918,7 +918,7 @@ function GallerySection() {
               <img src={image.src} alt={image.alt} className="w-full h-full object-cover" loading={index === 0 ? "eager" : "lazy"} />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-10">
-                <span className="text-[10px] sm:text-xs tracking-[0.2em] uppercase text-[var(--gold)] mb-2 sm:mb-3 block">{image.category}</span>
+                <span className="text-sm sm:text-sm tracking-[0.2em] uppercase text-[var(--gold)] mb-2 sm:mb-3 block">{image.category}</span>
                 <h3 className="text-lg sm:text-xl md:text-3xl text-white leading-tight" style={{ fontFamily: "var(--font-playfair)" }}>
                   {image.alt}
                 </h3>
@@ -976,7 +976,7 @@ function GallerySection() {
                 <div className="text-xl sm:text-2xl md:text-3xl text-[var(--foreground)] mb-1" style={{ fontFamily: "var(--font-playfair)" }}>
                   {stat.number}
                 </div>
-                <div className="text-[10px] sm:text-xs tracking-[0.1em] sm:tracking-[0.15em] uppercase text-[var(--muted)] leading-snug">{stat.label}</div>
+                <div className="text-sm sm:text-sm tracking-[0.1em] sm:tracking-[0.15em] uppercase text-[var(--muted)] leading-snug">{stat.label}</div>
               </div>
             </Reveal>
           ))}
@@ -1021,7 +1021,7 @@ function ProcessSection() {
                 >
                   {step.title}
                 </h3>
-                <p className="text-sm text-[var(--muted)] leading-relaxed">{step.description}</p>
+                <p className="text-base text-[var(--muted)] leading-relaxed">{step.description}</p>
               </div>
             </Reveal>
           ))}
@@ -1081,7 +1081,7 @@ function FAQSection() {
               aria-expanded={openIndex === index}
             >
               <div className="flex items-start justify-between gap-4 sm:gap-6 py-4 sm:py-6">
-                <span className="faq-question text-sm sm:text-base text-[var(--foreground)] font-light transition-colors duration-300 pr-2">
+                <span className="faq-question text-base sm:text-lg text-[var(--foreground)] font-light transition-colors duration-300 pr-2">
                   {faq.question}
                 </span>
                 <span className="faq-toggle text-[var(--muted)] flex-shrink-0 text-lg transition-all duration-300">
@@ -1090,7 +1090,7 @@ function FAQSection() {
               </div>
               <div className="faq-item-content">
                 <div className="faq-item-inner">
-                  <p className="text-[var(--muted)] leading-relaxed text-sm pr-4 sm:pr-8 pb-4 sm:pb-6">
+                  <p className="text-[var(--muted)] leading-relaxed text-base pr-4 sm:pr-8 pb-4 sm:pb-6">
                     {faq.answer}
                   </p>
                 </div>
@@ -1149,32 +1149,32 @@ function ContactSection() {
           <Reveal from="left" delay={100} className="lg:col-span-5">
             <div className="space-y-8 sm:space-y-12">
             <div>
-              <h3 className="text-xs tracking-[0.2em] uppercase text-[var(--muted)] mb-4 sm:mb-6">Visítanos</h3>
+              <h3 className="text-sm tracking-[0.2em] uppercase text-[var(--muted)] mb-4 sm:mb-6">Visítanos</h3>
               <p className="text-xl sm:text-2xl text-[var(--foreground)] mb-3 sm:mb-4" style={{ fontFamily: "var(--font-playfair)" }}>
                 {CONTACT.name}
               </p>
-              <p className="text-sm sm:text-base text-[var(--muted)] leading-relaxed">
+              <p className="text-base sm:text-lg text-[var(--muted)] leading-relaxed">
                 Zona metropolitana de Guadalajara
               </p>
             </div>
 
             <div>
-              <h3 className="text-xs tracking-[0.2em] uppercase text-[var(--muted)] mb-4 sm:mb-6">Contacto</h3>
+              <h3 className="text-sm tracking-[0.2em] uppercase text-[var(--muted)] mb-4 sm:mb-6">Contacto</h3>
               <div className="space-y-3 sm:space-y-4">
                 <a
                   href={`https://wa.me/${CONTACT.whatsapp}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block text-sm sm:text-base text-[var(--foreground)] hover:text-[var(--gold)] transition-colors break-all"
+                  className="block text-base sm:text-lg text-[var(--foreground)] hover:text-[var(--gold)] transition-colors break-all"
                 >
                   WhatsApp — {CONTACT.phone}
                 </a>
-                <p className="text-sm sm:text-base text-[var(--muted)]">Teléfono — {CONTACT.phone}</p>
+                <p className="text-base sm:text-lg text-[var(--muted)]">Teléfono — {CONTACT.phone}</p>
               </div>
             </div>
 
             <div>
-              <h3 className="text-xs tracking-[0.2em] uppercase text-[var(--muted)] mb-4 sm:mb-6">Redes</h3>
+              <h3 className="text-sm tracking-[0.2em] uppercase text-[var(--muted)] mb-4 sm:mb-6">Redes</h3>
               <div className="flex flex-wrap gap-4 sm:gap-6">
                 {["Facebook", "Instagram", "TikTok"].map((social) => (
                   <a key={social} href="#" className="nav-link hover:!text-[var(--gold)]">
@@ -1188,11 +1188,11 @@ function ContactSection() {
 
           <Reveal from="right" delay={150} className="lg:col-span-7">
           <form onSubmit={handleSubmit} className="pt-6 lg:pt-0 border-t lg:border-t-0 border-[var(--border)]">
-            <h3 className="text-xs tracking-[0.2em] uppercase text-[var(--muted)] mb-6 sm:mb-8">Solicita tu Cotización</h3>
+            <h3 className="text-sm tracking-[0.2em] uppercase text-[var(--muted)] mb-6 sm:mb-8">Solicita tu Cotización</h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
               <div>
-                <label className="block text-xs tracking-[0.1em] uppercase text-[var(--muted)] mb-3">Nombre completo</label>
+                <label className="block text-sm tracking-[0.1em] uppercase text-[var(--muted)] mb-3">Nombre completo</label>
                 <input
                   type="text"
                   required
@@ -1203,7 +1203,7 @@ function ContactSection() {
                 />
               </div>
               <div>
-                <label className="block text-xs tracking-[0.1em] uppercase text-[var(--muted)] mb-3">Teléfono</label>
+                <label className="block text-sm tracking-[0.1em] uppercase text-[var(--muted)] mb-3">Teléfono</label>
                 <input
                   type="tel"
                   required
@@ -1216,7 +1216,7 @@ function ContactSection() {
             </div>
 
             <div className="mb-6">
-              <label className="block text-xs tracking-[0.1em] uppercase text-[var(--muted)] mb-3">Correo electrónico</label>
+              <label className="block text-sm tracking-[0.1em] uppercase text-[var(--muted)] mb-3">Correo electrónico</label>
               <input
                 type="email"
                 required
@@ -1229,7 +1229,7 @@ function ContactSection() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
               <div>
-                <label className="block text-xs tracking-[0.1em] uppercase text-[var(--muted)] mb-3">Fecha del evento</label>
+                <label className="block text-sm tracking-[0.1em] uppercase text-[var(--muted)] mb-3">Fecha del evento</label>
                 <input
                   type="date"
                   required
@@ -1240,7 +1240,7 @@ function ContactSection() {
                 />
               </div>
               <div>
-                <label className="block text-xs tracking-[0.1em] uppercase text-[var(--muted)] mb-3">Número de invitados</label>
+                <label className="block text-sm tracking-[0.1em] uppercase text-[var(--muted)] mb-3">Número de invitados</label>
                 <input
                   type="number"
                   required
@@ -1253,7 +1253,7 @@ function ContactSection() {
             </div>
 
             <div className="mb-10">
-              <label className="block text-xs tracking-[0.1em] uppercase text-[var(--muted)] mb-3">Cuéntanos sobre tu evento</label>
+              <label className="block text-sm tracking-[0.1em] uppercase text-[var(--muted)] mb-3">Cuéntanos sobre tu evento</label>
               <textarea
                 rows={4}
                 className="w-full px-0 py-3 bg-transparent border-b border-[var(--border)] text-[var(--foreground)] placeholder-[var(--muted)] focus:border-[var(--gold)] transition-colors resize-none"
@@ -1265,7 +1265,7 @@ function ContactSection() {
 
             <button
               type="submit"
-              className="btn-primary w-full sm:w-auto px-10 py-4 bg-[var(--gold)] text-[var(--background)] text-xs tracking-[0.15em] uppercase hover:bg-[var(--gold-light)] transition-colors duration-300"
+              className="btn-primary w-full sm:w-auto px-10 py-4 bg-[var(--gold)] text-[var(--background)] text-sm tracking-[0.15em] uppercase hover:bg-[var(--gold-light)] transition-colors duration-300"
             >
               Enviar Cotización por WhatsApp
             </button>
@@ -1293,10 +1293,10 @@ function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-8 sm:gap-12 mb-12 sm:mb-16">
           <Reveal from="left" className="md:col-span-5 sm:col-span-2">
           <div>
-            <span className="text-lg sm:text-xl text-[var(--foreground)]" style={{ fontFamily: "var(--font-playfair)" }}>
+            <span className="text-xl sm:text-2xl text-[var(--foreground)]" style={{ fontFamily: "var(--font-playfair)" }}>
               {CONTACT.name}
             </span>
-            <p className="text-[var(--muted)] mt-4 max-w-sm leading-relaxed text-sm">
+            <p className="text-[var(--muted)] mt-4 max-w-sm leading-relaxed text-base">
               Servicio profesional de meseros para todo tipo de eventos.
               Experiencia, puntualidad y excelencia en cada celebración.
             </p>
@@ -1305,7 +1305,7 @@ function Footer() {
 
           <Reveal from="right" delay={80} className="md:col-span-3">
           <div>
-            <h4 className="text-xs tracking-[0.2em] uppercase text-[var(--muted)] mb-6">Enlaces</h4>
+            <h4 className="text-sm tracking-[0.2em] uppercase text-[var(--muted)] mb-6">Enlaces</h4>
             <ul className="space-y-3">
               {footerLinks.map((link) => (
                 <li key={link.href}>
@@ -1320,8 +1320,8 @@ function Footer() {
 
           <Reveal from="left" delay={160} className="md:col-span-4">
           <div>
-            <h4 className="text-xs tracking-[0.2em] uppercase text-[var(--muted)] mb-6">Contacto</h4>
-            <ul className="space-y-3 text-sm text-[var(--muted)]">
+            <h4 className="text-sm tracking-[0.2em] uppercase text-[var(--muted)] mb-6">Contacto</h4>
+            <ul className="space-y-3 text-base text-[var(--muted)]">
               <li>{CONTACT.name}</li>
               <li>{CONTACT.phone}</li>
               <li>Zona metropolitana de Guadalajara</li>
@@ -1332,10 +1332,10 @@ function Footer() {
 
         <Reveal from="up" delay={100}>
         <div className="pt-6 sm:pt-8 border-t border-[var(--border)] flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
-          <p className="text-[10px] sm:text-xs text-[var(--muted)] tracking-wide">
+          <p className="text-base text-[var(--muted)] tracking-wide">
             © {new Date().getFullYear()} {CONTACT.name}. Todos los derechos reservados.
           </p>
-          <div className="flex flex-wrap justify-center gap-4 sm:gap-8 text-[10px] sm:text-xs">
+          <div className="flex flex-wrap justify-center gap-4 sm:gap-8 text-base">
             <a href="#" className="nav-link hover:!text-[var(--foreground)]">
               Aviso de Privacidad
             </a>
