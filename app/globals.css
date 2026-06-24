@@ -697,3 +697,102 @@ input:focus, textarea:focus {
   box-shadow: 0 0 0 1px var(--gold);
 }
 
+/* Mixología page */
+.mix-photo {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--charcoal);
+}
+
+.mix-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.mix-photo:hover img {
+  transform: scale(1.04);
+}
+
+.mix-photo__corner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-top: 1px solid var(--gold);
+  border-left: 1px solid var(--gold);
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.mix-photo--lift {
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+}
+
+.mix-photo-stack {
+  position: relative;
+}
+
+.mix-photo-stack__main {
+  position: relative;
+  z-index: 1;
+}
+
+.mix-photo-stack__accent {
+  position: absolute;
+  right: -0.75rem;
+  bottom: -1.25rem;
+  width: 44%;
+  z-index: 2;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+}
+
+@media (min-width: 768px) {
+  .mix-photo-stack__accent {
+    right: -1.5rem;
+    bottom: -1.75rem;
+  }
+}
+
+.mix-badge {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(201, 169, 98, 0.35);
+  padding: 0.35rem 0.65rem;
+}
+
+.mix-chip {
+  display: inline-block;
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  padding: 0.45rem 0.75rem;
+  background: rgba(255, 255, 255, 0.02);
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+.mix-chip:hover {
+  border-color: var(--gold);
+  color: var(--gold-light);
+}
+
+.mix-spirit-card {
+  transition: border-color 0.35s ease;
+}
+
+.mix-spirit-card:hover {
+  border-color: rgba(201, 169, 98, 0.35);
+}
+
+.mix-option [id] {
+  scroll-margin-top: 6rem;
+}
+

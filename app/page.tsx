@@ -762,9 +762,9 @@ function MixologistSection() {
             >
               Cotizar Mixólogo
             </a>
-            <a href="#servicios-adicionales" className="text-link text-[var(--foreground)]">
+            <Link href="/mixologia" className="text-link text-[var(--foreground)]">
               Ver más servicios
-            </a>
+            </Link>
           </div>
         </Reveal>
       </div>
