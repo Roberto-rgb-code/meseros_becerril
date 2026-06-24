@@ -135,9 +135,16 @@ function Navbar() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "";
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    }
     return () => {
       document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     };
   }, [isMobileMenuOpen]);
 
@@ -151,11 +158,12 @@ function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled || isMobileMenuOpen ? "glass py-3 md:py-4" : "bg-transparent py-4 md:py-8"
+      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${
+        isScrolled || isMobileMenuOpen ? "glass py-3 md:py-4" : "bg-transparent py-4 md:py-8 max-md:bg-[rgba(10,10,10,0.72)] max-md:backdrop-blur-md max-md:py-3"
       }`}
+      style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+      <div className="relative z-[102] max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <div className="flex items-center justify-between gap-4">
           <a href="#" className="group min-w-0 flex-1 md:flex-none">
             <span
@@ -183,12 +191,14 @@ function Navbar() {
           </div>
 
           <button
-            className="md:hidden text-[var(--foreground)] p-2 -mr-2 flex-shrink-0"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            type="button"
+            className="md:hidden relative z-[103] text-[var(--foreground)] min-w-11 min-h-11 flex items-center justify-center -mr-2 flex-shrink-0 touch-manipulation cursor-pointer"
+            onClick={() => setIsMobileMenuOpen((open) => !open)}
             aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
             aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-menu"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               {isMobileMenuOpen ? (
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
               ) : (
@@ -197,36 +207,40 @@ function Navbar() {
             </svg>
           </button>
         </div>
-
-        {isMobileMenuOpen && (
-          <div className="md:hidden fixed inset-0 top-[57px] bg-[var(--background)] z-40 overflow-y-auto">
-            <div className="flex flex-col gap-6 px-4 sm:px-6 py-8 pb-24">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="nav-link text-base py-2 border-b border-[var(--border)]"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToAnchor(link.href, () => setIsMobileMenuOpen(false));
-                  }}
-                >
-                  {link.label}
-                </a>
-              ))}
-              <a
-                href={`https://wa.me/${CONTACT.whatsapp}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-link !text-[var(--gold)] text-base mt-4"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Cotizar Ahora
-              </a>
-            </div>
-          </div>
-        )}
       </div>
+
+      {isMobileMenuOpen && (
+        <div
+          id="mobile-menu"
+          className="md:hidden fixed left-0 right-0 bottom-0 z-[101] bg-[var(--background)] overflow-y-auto overscroll-contain"
+          style={{ top: "calc(3.5rem + env(safe-area-inset-top, 0px))" }}
+        >
+          <div className="flex flex-col gap-6 px-4 sm:px-6 py-8 pb-24">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="nav-link text-base py-3 border-b border-[var(--border)]"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToAnchor(link.href, () => setIsMobileMenuOpen(false));
+                }}
+              >
+                {link.label}
+              </a>
+            ))}
+            <a
+              href={`https://wa.me/${CONTACT.whatsapp}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-link !text-[var(--gold)] text-base mt-4"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Cotizar Ahora
+            </a>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
@@ -234,7 +248,7 @@ function Navbar() {
 function HeroSection() {
   return (
     <section className="relative min-h-[100dvh] flex flex-col justify-end overflow-hidden">
-      <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
+      <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover pointer-events-none">
         <source src="/5032272-hd_1920_1080_25fps.mp4" type="video/mp4" />
       </video>
 

@@ -47,6 +47,10 @@ body {
   overflow-x: hidden;
 }
 
+video {
+  pointer-events: none;
+}
+
 h1, h2, h3, h4 {
   font-family: var(--font-playfair), Georgia, serif;
   font-weight: 400;
