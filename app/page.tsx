@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, ReactNode } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { CONTACT } from "./constants";
-import { MEDIA } from "./media";
+import { MEDIA, type PhotoItem } from "./media";
 
 type RevealDirection = "left" | "right" | "up";
 
@@ -134,26 +134,61 @@ function SectionVideoBanner({
   className?: string;
 }) {
   return (
-    <div className={`relative overflow-hidden pointer-events-none ${className}`}>
+    <div className={`relative overflow-hidden pointer-events-none border border-[var(--border)] ${className}`}>
       <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover pointer-events-none">
         <source src={src} type="video/mp4" />
       </video>
+      <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)]/40 via-transparent to-[var(--background)]/10 pointer-events-none" />
     </div>
   );
 }
 
-function SectionPhoto({
+function EditorialPhoto({
   src,
   alt,
+  category,
   className = "aspect-[4/3]",
+  variant = "editorial",
+  showCaption = false,
+  priority = false,
 }: {
   src: string;
   alt: string;
+  category?: string;
   className?: string;
+  variant?: "editorial" | "card" | "ambient" | "plain";
+  showCaption?: boolean;
+  priority?: boolean;
 }) {
   return (
-    <div className={`relative overflow-hidden border border-[var(--border)] ${className}`}>
-      <img src={src} alt={alt} className="w-full h-full object-cover" loading="lazy" />
+    <figure className={`editorial-photo editorial-photo--${variant} ${className}`}>
+      <span className="editorial-photo__corner" aria-hidden="true" />
+      <img src={src} alt={alt} loading={priority ? "eager" : "lazy"} />
+      {showCaption && (category || alt) && (
+        <figcaption className="editorial-photo__caption">
+          {category && <span className="editorial-photo__category">{category}</span>}
+          <span className="editorial-photo__label">{alt}</span>
+        </figcaption>
+      )}
+    </figure>
+  );
+}
+
+function PhotoFilmstrip({ photos }: { photos: readonly PhotoItem[] }) {
+  return (
+    <div className="photo-filmstrip scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
+      {photos.map((photo) => (
+        <div key={photo.src} className="photo-filmstrip__item">
+          <EditorialPhoto
+            src={photo.src}
+            alt={photo.alt}
+            category={photo.category}
+            showCaption
+            className="aspect-[3/4] h-full"
+            variant="card"
+          />
+        </div>
+      ))}
     </div>
   );
 }
@@ -417,16 +452,29 @@ function BenefitsSection() {
         </Reveal>
 
         <Reveal from="up" delay={80} className="my-10 md:my-14">
-          <SectionVideoBanner src={MEDIA.benefits.video} />
+          <SectionVideoBanner src={MEDIA.benefits.video} className="min-h-[24vh] sm:min-h-[30vh]" />
         </Reveal>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 lg:gap-20 items-start">
           <Reveal from="left" delay={100}>
-            <SectionPhoto
-              src={MEDIA.benefits.featured}
-              alt="Mesero profesional sirviendo en evento elegante"
-              className="aspect-[4/5] sm:aspect-[3/4]"
-            />
+            <div className="benefits-photo-stack mb-10 lg:mb-0">
+              <EditorialPhoto
+                src={MEDIA.benefits.hero.src}
+                alt={MEDIA.benefits.hero.alt}
+                category={MEDIA.benefits.hero.category}
+                showCaption
+                className="benefits-photo-stack__main aspect-[4/5] sm:aspect-[3/4]"
+                priority
+              />
+              <EditorialPhoto
+                src={MEDIA.benefits.accent.src}
+                alt={MEDIA.benefits.accent.alt}
+                category={MEDIA.benefits.accent.category}
+                showCaption
+                className="benefits-photo-stack__accent aspect-square hidden sm:block"
+                variant="card"
+              />
+            </div>
             <div className="flex justify-center mt-8">
               <TextLink href="#galeria">Ver galería</TextLink>
             </div>
@@ -468,49 +516,41 @@ function ServicesSection() {
       title: "Meseros para Eventos Privados",
       description: "Servicio personalizado para fiestas, reuniones y celebraciones íntimas con atención de primera.",
       features: ["Servicio de mesa", "Atención a invitados", "Montaje básico"],
-      image: MEDIA.services.items["Meseros para Eventos Privados"],
     },
     {
       title: "Staff para Bodas y XV Años",
       description: "Equipo especializado en eventos sociales con protocolo y elegancia para tu día especial.",
       features: ["Coordinación con organizadores", "Servicio de banquete", "Atención VIP"],
-      image: MEDIA.services.items["Staff para Bodas y XV Años"],
     },
     {
       title: "Eventos Corporativos",
       description: "Profesionalismo y discreción para conferencias, cenas ejecutivas y eventos empresariales.",
       features: ["Imagen corporativa", "Coffee breaks", "Cenas de gala"],
-      image: MEDIA.services.items["Eventos Corporativos"],
     },
     {
       title: "Capitanes de Meseros",
       description: "Supervisión experta para coordinar equipos grandes y garantizar un servicio impecable.",
       features: ["Coordinación de equipo", "Control de tiempos", "Resolución de imprevistos"],
-      image: MEDIA.services.items["Capitanes de Meseros"],
     },
     {
       title: "Montaje y Desmontaje",
       description: "Preparación completa del espacio antes y después de tu evento con profesionalismo.",
       features: ["Montaje de mesas", "Decoración básica", "Limpieza post-evento"],
-      image: MEDIA.services.items["Montaje y Desmontaje"],
     },
     {
       title: "Servicio de Coctelería",
       description: "Bartenders profesionales para barra de bebidas con show y preparaciones especiales.",
       features: ["Coctelería clásica", "Bebidas personalizadas", "Show de barman"],
-      image: MEDIA.services.items["Servicio de Coctelería"],
     },
     {
       title: "Hostess y Recepción",
       description: "Personal de recepción para dar la bienvenida y guiar a tus invitados con elegancia.",
       features: ["Registro de invitados", "Orientación", "Imagen impecable"],
-      image: MEDIA.services.items["Hostess y Recepción"],
     },
     {
       title: "Servicio a Domicilio",
       description: "Llevamos el servicio profesional hasta tu hogar para cenas y celebraciones privadas.",
       features: ["Eventos en casa", "Cenas íntimas", "Celebraciones familiares"],
-      image: MEDIA.services.items["Servicio a Domicilio"],
     },
   ];
 
@@ -530,8 +570,12 @@ function ServicesSection() {
           />
         </Reveal>
 
-        <Reveal from="up" delay={80} className="mb-10 md:mb-14">
-          <SectionVideoBanner src={MEDIA.services.bannerVideo} className="min-h-[32vh] sm:min-h-[40vh]" />
+        <Reveal from="up" delay={80} className="mb-8 md:mb-10">
+          <SectionVideoBanner src={MEDIA.services.bannerVideo} className="min-h-[28vh] sm:min-h-[34vh]" />
+        </Reveal>
+
+        <Reveal from="up" delay={120} className="mb-10 md:mb-14">
+          <PhotoFilmstrip photos={MEDIA.services.showcase} />
         </Reveal>
 
         <div className="mt-4">
@@ -564,24 +608,15 @@ function ServicesSection() {
 
               <div className="service-item-content">
                 <div className="service-item-inner">
-                  <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 pb-5 sm:pb-6 md:pb-8">
-                    <div className="md:col-span-5">
-                      <SectionPhoto
-                        src={service.image}
-                        alt={service.title}
-                        className="aspect-[4/3] md:aspect-[3/4]"
-                      />
-                    </div>
-                    <div className="md:col-span-7">
-                      <p className="text-sm sm:text-base text-[var(--muted)] leading-relaxed mb-4">{service.description}</p>
-                      <ul className="space-y-1.5">
-                        {service.features.map((feature, idx) => (
-                          <li key={idx} className="text-sm sm:text-sm tracking-wide text-[var(--muted)] uppercase">
-                            {feature}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                  <div className="pb-5 sm:pb-6 md:pb-8 md:max-w-3xl">
+                    <p className="text-sm sm:text-base text-[var(--muted)] leading-relaxed mb-4">{service.description}</p>
+                    <ul className="space-y-1.5">
+                      {service.features.map((feature, idx) => (
+                        <li key={idx} className="text-sm sm:text-sm tracking-wide text-[var(--muted)] uppercase">
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -605,24 +640,24 @@ function AdditionalServicesSection() {
       description:
         "Experto en parrilla para tus eventos al aire libre. Preparación de carnes, cortes especiales y servicio en vivo frente a tus invitados.",
       features: ["Parrilla en vivo", "Carnes y cortes premium", "Atención en jardín o terraza"],
-      image: MEDIA.additionalServices.Parrillero,
-      alt: "Parrillero preparando carne en evento",
+      image: MEDIA.additionalServices.Parrillero.src,
+      alt: "Mesa elegante preparada para evento al aire libre",
     },
     {
       title: "Bartender",
       description:
         "Servicio profesional de barra con bebidas clásicas y de autor. Atención ágil, presentación impecable y ambiente sofisticado para tu evento.",
       features: ["Barra completa", "Bebidas clásicas y especiales", "Servicio dinámico"],
-      image: MEDIA.additionalServices.Bartender,
-      alt: "Bartender sirviendo bebidas en evento",
+      image: MEDIA.additionalServices.Bartender.src,
+      alt: MEDIA.additionalServices.Bartender.alt,
     },
     {
       title: "Mixólogo",
       description:
         "Coctelería de autor y creaciones exclusivas para ocasiones especiales. Menús personalizados, ingredientes premium y show de mixología.",
       features: ["Cocteles de autor", "Menú personalizado", "Experiencia premium"],
-      image: MEDIA.additionalServices.Mixólogo,
-      alt: "Mixólogo preparando cocteles",
+      image: MEDIA.additionalServices.Mixólogo.src,
+      alt: MEDIA.additionalServices.Mixólogo.alt,
     },
   ];
 
@@ -654,23 +689,22 @@ function AdditionalServicesSection() {
               delay={index * 100}
             >
               <article className="card-minimal group overflow-hidden flex flex-col h-full">
-              <div className="relative aspect-[4/3] overflow-hidden">
-                <img
-                  src={service.image}
-                  alt={service.alt}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+              <EditorialPhoto
+                src={service.image}
+                alt={service.alt}
+                category={service.title}
+                showCaption
+                className="aspect-[4/3] border-0 border-b border-[var(--border)]"
+                variant="card"
+              />
+
+              <div className="p-6 sm:p-8 flex flex-col flex-grow">
                 <h3
-                  className="absolute bottom-4 left-4 right-4 text-xl sm:text-2xl text-white"
+                  className="text-xl sm:text-2xl text-[var(--foreground)] mb-4 group-hover:text-[var(--gold)] transition-colors duration-300"
                   style={{ fontFamily: "var(--font-playfair)" }}
                 >
                   {service.title}
                 </h3>
-              </div>
-
-              <div className="p-6 sm:p-8 flex flex-col flex-grow">
                 <p className="text-base text-[var(--muted)] leading-relaxed mb-6 flex-grow">
                   {service.description}
                 </p>
@@ -831,10 +865,13 @@ function PackagesSection() {
                 pkg.popular ? "border-[var(--gold)]/40 bg-[var(--charcoal)] md:order-none order-first" : ""
               }`}
             >
-              <SectionPhoto
-                src={MEDIA.packages[pkg.name as keyof typeof MEDIA.packages]}
+              <EditorialPhoto
+                src={MEDIA.packages[pkg.name as keyof typeof MEDIA.packages].src}
                 alt={`Paquete ${pkg.name} — ${pkg.subtitle}`}
+                category={pkg.subtitle}
+                showCaption
                 className="aspect-[16/10] border-0 border-b border-[var(--border)]"
+                variant="card"
               />
               <div className="p-6 sm:p-8 md:p-10 flex flex-col flex-grow">
               {pkg.popular && (
@@ -892,9 +929,9 @@ function StatsSection() {
     <section className="relative border-y border-[var(--border)] overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
         <img
-          src={MEDIA.stats.background}
-          alt="Servicio de catering en evento"
-          className="w-full h-full object-cover opacity-25"
+          src={MEDIA.stats.background.src}
+          alt={MEDIA.stats.background.alt}
+          className="w-full h-full object-cover opacity-30"
           loading="lazy"
         />
         <div className="absolute inset-0 bg-[var(--background)]/80" />
@@ -978,10 +1015,12 @@ function TestimonialsSection() {
           {testimonials.map((testimonial, index) => (
             <Reveal key={index} from={sideFromIndex(index)} delay={index * 100}>
               <article className="card-minimal overflow-hidden h-full flex flex-col">
-              <SectionPhoto
-                src={testimonial.image}
+              <EditorialPhoto
+                src={testimonial.image.src}
                 alt={`Evento de ${testimonial.event} — testimonio de ${testimonial.name}`}
-                className="aspect-[16/10] border-0 border-b border-[var(--border)]"
+                category={testimonial.event}
+                className="testimonial-photo border-0"
+                variant="ambient"
               />
               <div className="p-6 sm:p-8 md:p-10 flex flex-col flex-grow">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 sm:mb-8">
@@ -1115,11 +1154,27 @@ function GallerySection() {
         </div>
         </Reveal>
 
+        <Reveal from="up" delay={180} className="mt-8 md:mt-12 hidden md:block">
+          <div className="gallery-mosaic">
+            {images.map((image, index) => (
+              <button
+                key={image.src}
+                type="button"
+                onClick={() => goToSlide(index)}
+                className={`gallery-mosaic__item ${index === currentSlide ? "is-active" : ""}`}
+                aria-label={`Ver ${image.alt}`}
+              >
+                <img src={image.src} alt={image.alt} loading="lazy" />
+              </button>
+            ))}
+          </div>
+        </Reveal>
+
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mt-10 sm:mt-16 pt-10 sm:pt-16 border-t border-[var(--border)]">
           {[
-            { number: "500+", label: "Fotos de Eventos" },
+            { number: "8", label: "Momentos Destacados" },
             { number: "8", label: "Tipos de Servicios" },
-            { number: "100%", label: "Eventos Documentados" },
+            { number: "100%", label: "Atención al Detalle" },
             { number: "5⭐", label: "Calificación Promedio" },
           ].map((stat, index) => (
             <Reveal key={index} from={sideFromIndex(index)} delay={index * 80}>
@@ -1165,10 +1220,12 @@ function ProcessSection() {
           {steps.map((step, index) => (
             <Reveal key={index} from={index % 2 === 0 ? "left" : "right"} delay={index * 100}>
               <div className="group h-full">
-                <SectionPhoto
-                  src={step.image}
+                <EditorialPhoto
+                  src={step.image.src}
                   alt={step.title}
+                  category={step.number}
                   className="aspect-[4/3] mb-5 sm:mb-6"
+                  variant="card"
                 />
                 <span className="section-number block mb-4 sm:mb-6">{step.number}{"//"}</span>
                 <h3
@@ -1222,10 +1279,13 @@ function FAQSection() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
           <Reveal from="left" delay={80} className="lg:col-span-5 hidden lg:block">
-            <SectionPhoto
-              src={MEDIA.faq.side}
-              alt="Mesero profesional en servicio de evento"
+            <EditorialPhoto
+              src={MEDIA.faq.side.src}
+              alt={MEDIA.faq.side.alt}
+              category={MEDIA.faq.side.category}
+              showCaption
               className="aspect-[3/4] sticky top-28"
+              variant="editorial"
             />
           </Reveal>
 
@@ -1318,10 +1378,13 @@ function ContactSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-20">
           <Reveal from="left" delay={100} className="lg:col-span-5">
             <div className="space-y-8 sm:space-y-12">
-            <SectionPhoto
-              src={MEDIA.contact.side}
-              alt="Celebración con servicio profesional de meseros"
+            <EditorialPhoto
+              src={MEDIA.contact.side.src}
+              alt={MEDIA.contact.side.alt}
+              category={MEDIA.contact.side.category}
+              showCaption
               className="aspect-[4/3]"
+              variant="editorial"
             />
             <div>
               <h3 className="text-sm tracking-[0.2em] uppercase text-[var(--muted)] mb-4 sm:mb-6">Visítanos</h3>
