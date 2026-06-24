@@ -430,9 +430,36 @@ h1, h2, h3, h4 {
   display: none;
 }
 
+[id] {
+  scroll-margin-top: 5rem;
+}
+
 .section-padding {
   padding-top: 4rem;
   padding-bottom: 4rem;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --muted: #b8b3ac;
+  }
+
+  .section-number,
+  .section-label {
+    color: #c8c3bc;
+  }
+
+  .section-description {
+    color: #b8b3ac;
+  }
+
+  .nav-link {
+    color: #c8c3bc;
+  }
+
+  .nav-link:hover {
+    color: var(--foreground);
+  }
 }
 
 @media (min-width: 768px) {

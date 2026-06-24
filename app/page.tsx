@@ -58,6 +58,23 @@ function sideFromIndex(index: number): RevealDirection {
   return index % 2 === 0 ? "left" : "right";
 }
 
+function scrollToAnchor(href: string, onBeforeScroll?: () => void) {
+  const id = href.replace(/^#/, "");
+  const element = document.getElementById(id);
+  if (!element) return;
+
+  onBeforeScroll?.();
+
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      const navOffset = 72;
+      const top = element.getBoundingClientRect().top + window.scrollY - navOffset;
+      window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+      window.history.replaceState(null, "", `#${id}`);
+    }, 100);
+  });
+}
+
 function SectionHeader({
   number,
   label,
@@ -189,7 +206,10 @@ function Navbar() {
                   key={link.href}
                   href={link.href}
                   className="nav-link text-base py-2 border-b border-[var(--border)]"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToAnchor(link.href, () => setIsMobileMenuOpen(false));
+                  }}
                 >
                   {link.label}
                 </a>
