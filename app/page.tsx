@@ -641,7 +641,6 @@ function MixologistSection() {
     "Cocteles de autor y creaciones exclusivas",
     "Menús personalizados para tu evento",
     "Ingredientes premium y presentación impecable",
-    "Show de mixología en vivo",
   ];
 
   return (
