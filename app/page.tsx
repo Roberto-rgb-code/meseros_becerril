@@ -67,7 +67,7 @@ function scrollToAnchor(href: string, onBeforeScroll?: () => void) {
 
   requestAnimationFrame(() => {
     setTimeout(() => {
-      const navOffset = 72;
+      const navOffset = window.matchMedia("(max-width: 768px)").matches ? 88 : 72;
       const top = element.getBoundingClientRect().top + window.scrollY - navOffset;
       window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
       window.history.replaceState(null, "", `#${id}`);
@@ -355,9 +355,7 @@ function ServicesSection() {
   const [openService, setOpenService] = useState<number | null>(null);
 
   const toggleService = (index: number) => {
-    if (window.matchMedia("(hover: none)").matches) {
-      setOpenService(openService === index ? null : index);
-    }
+    setOpenService((prev) => (prev === index ? null : index));
   };
 
   const services = [
@@ -977,9 +975,7 @@ function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const toggleFaq = (index: number) => {
-    if (window.matchMedia("(hover: none)").matches) {
-      setOpenIndex(openIndex === index ? null : index);
-    }
+    setOpenIndex((prev) => (prev === index ? null : index));
   };
 
   const faqs = [

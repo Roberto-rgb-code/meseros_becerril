@@ -257,6 +257,8 @@ h1, h2, h3, h4 {
 .service-item {
   border-top: 1px solid var(--border);
   cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .service-item:last-child {
@@ -269,11 +271,6 @@ h1, h2, h3, h4 {
   transition: grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.service-item:hover .service-item-content,
-.service-item:focus-within .service-item-content {
-  grid-template-rows: 1fr;
-}
-
 .service-item-inner {
   overflow: hidden;
 }
@@ -284,67 +281,69 @@ h1, h2, h3, h4 {
   transition: opacity 0.4s ease 0.05s, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.05s;
 }
 
-.service-item:hover .service-item-inner > div,
-.service-item:focus-within .service-item-inner > div,
+.service-item.is-open .service-item-content,
+.service-item.open .service-item-content {
+  grid-template-rows: 1fr;
+}
+
+.service-item.is-open .service-item-inner > div,
 .service-item.open .service-item-inner > div {
   opacity: 1;
   transform: translateY(0);
 }
 
-.service-item.open .service-item-content {
-  grid-template-rows: 1fr;
-}
-
+.service-item.is-open .service-toggle,
 .service-item.open .service-toggle {
   transform: rotate(45deg);
   color: var(--gold);
 }
 
-@media (hover: none) {
+.service-item.is-open h3,
+.service-item.open h3 {
+  color: var(--gold);
+}
+
+@media (hover: hover) and (pointer: fine) {
   .service-item {
-    cursor: pointer;
+    cursor: default;
   }
 
   .service-item:hover .service-item-content {
-    grid-template-rows: 0fr;
+    grid-template-rows: 1fr;
   }
 
   .service-item:hover .service-item-inner > div {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-
-  .service-item:hover .service-toggle {
-    transform: none;
-    color: var(--muted);
-  }
-}
-
-@media (hover: hover) {
-  .service-item:hover .service-item-content {
-    grid-template-rows: 1fr;
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .service-item:hover .service-toggle {
     transform: rotate(45deg);
     color: var(--gold);
   }
+
+  .service-item:hover h3 {
+    color: var(--gold);
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .service-item {
+    cursor: pointer;
+  }
 }
 
 .faq-item {
   border-bottom: 1px solid var(--border);
   cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .faq-item-content {
   display: grid;
   grid-template-rows: 0fr;
   transition: grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.faq-item:hover .faq-item-content,
-.faq-item:focus-within .faq-item-content {
-  grid-template-rows: 1fr;
 }
 
 .faq-item-inner {
@@ -357,59 +356,55 @@ h1, h2, h3, h4 {
   transition: opacity 0.4s ease 0.05s, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.05s;
 }
 
-.faq-item:hover .faq-item-inner > p,
-.faq-item:focus-within .faq-item-inner > p,
+.faq-item.is-open .faq-item-content,
+.faq-item.open .faq-item-content {
+  grid-template-rows: 1fr;
+}
+
+.faq-item.is-open .faq-item-inner > p,
 .faq-item.open .faq-item-inner > p {
   opacity: 1;
   transform: translateY(0);
 }
 
-.faq-item.open .faq-item-content {
-  grid-template-rows: 1fr;
-}
-
+.faq-item.is-open .faq-toggle,
 .faq-item.open .faq-toggle {
   transform: rotate(45deg);
   color: var(--gold);
 }
 
-.faq-item:hover .faq-question,
+.faq-item.is-open .faq-question,
 .faq-item.open .faq-question {
   color: var(--gold);
 }
 
-@media (hover: none) {
+@media (hover: hover) and (pointer: fine) {
   .faq-item {
-    cursor: pointer;
+    cursor: default;
   }
 
   .faq-item:hover .faq-item-content {
-    grid-template-rows: 0fr;
+    grid-template-rows: 1fr;
   }
 
   .faq-item:hover .faq-item-inner > p {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-
-  .faq-item:hover .faq-toggle {
-    transform: none;
-    color: var(--muted);
-  }
-
-  .faq-item:hover .faq-question {
-    color: var(--foreground);
-  }
-}
-
-@media (hover: hover) {
-  .faq-item:hover .faq-item-content {
-    grid-template-rows: 1fr;
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .faq-item:hover .faq-toggle {
     transform: rotate(45deg);
     color: var(--gold);
+  }
+
+  .faq-item:hover .faq-question {
+    color: var(--gold);
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .faq-item {
+    cursor: pointer;
   }
 }
 
@@ -441,24 +436,38 @@ h1, h2, h3, h4 {
 
 @media (max-width: 768px) {
   :root {
-    --muted: #b8b3ac;
+    --muted: #c4bfb8;
+  }
+
+  [id] {
+    scroll-margin-top: 6.5rem;
+  }
+
+  .section-padding {
+    padding-top: 5rem;
   }
 
   .section-number,
   .section-label {
-    color: #c8c3bc;
+    color: #d4cfc8;
   }
 
   .section-description {
-    color: #b8b3ac;
+    color: #c4bfb8;
   }
 
   .nav-link {
-    color: #c8c3bc;
+    color: #d4cfc8;
   }
 
   .nav-link:hover {
     color: var(--foreground);
+  }
+
+  .service-item:focus-visible,
+  .faq-item:focus-visible {
+    outline: 1px solid var(--gold);
+    outline-offset: 2px;
   }
 }
 
