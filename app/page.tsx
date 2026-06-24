@@ -189,7 +189,7 @@ function Navbar() {
         <div
           id="mobile-menu"
           className="md:hidden fixed inset-0 z-[9998] bg-[var(--background)]"
-          style={{ paddingTop: "calc(5rem + env(safe-area-inset-top, 0px))" }}
+          style={{ paddingTop: "calc(4rem + env(safe-area-inset-top, 0px))" }}
         >
           <div className="h-full overflow-y-auto overscroll-contain">
             <div className="flex flex-col gap-2 px-4 sm:px-6 py-6 pb-24">
@@ -197,7 +197,7 @@ function Navbar() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="nav-link text-lg py-4 border-b border-[var(--border)]"
+                  className="nav-link text-base py-4 border-b border-[var(--border)]"
                   onClick={(e) => {
                     e.preventDefault();
                     isNavigatingRef.current = true;
@@ -212,7 +212,7 @@ function Navbar() {
                 href={`https://wa.me/${CONTACT.whatsapp}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-link !text-[var(--gold)] text-lg mt-4 py-2"
+                className="text-link !text-[var(--gold)] text-base mt-4 py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Cotizar Ahora
@@ -259,7 +259,7 @@ function Navbar() {
           <div className="flex flex-col items-center text-center min-h-11 md:min-h-0">
             <a href="#" className="group inline-block max-w-full px-12 md:px-0">
               <span
-                className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-wide text-[var(--foreground)] group-hover:text-[var(--gold)] transition-colors duration-300"
+                className="block text-lg sm:text-xl md:text-2xl tracking-wide text-[var(--foreground)] group-hover:text-[var(--gold)] transition-colors duration-300"
                 style={{ fontFamily: "var(--font-playfair)" }}
               >
                 {CONTACT.name}
@@ -299,20 +299,20 @@ function HeroSection() {
       <div className="absolute inset-0 hero-mobile-overlay md:hidden pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 w-full pb-12 sm:pb-16 md:pb-24 pt-24 sm:pt-32 hero-text-shadow md:[text-shadow:none] pointer-events-auto">
-        <p className="text-base sm:text-lg md:text-lg tracking-[0.15em] sm:tracking-[0.2em] uppercase text-[var(--muted)] mb-6 sm:mb-8 animate-fade-in-up">
+        <p className="text-xs sm:text-sm md:text-sm tracking-[0.15em] sm:tracking-[0.2em] uppercase text-[var(--muted)] mb-6 sm:mb-8 animate-fade-in-up">
           Servicio profesional de meseros en la zona metropolitana de Guadalajara
         </p>
 
         <div className="max-w-4xl">
           <span
-            className="inline-block text-base sm:text-lg tracking-[0.15em] sm:tracking-[0.2em] uppercase text-[var(--gold)] mb-4 sm:mb-6 animate-fade-in-up opacity-0"
+            className="inline-block text-xs sm:text-sm tracking-[0.15em] sm:tracking-[0.2em] uppercase text-[var(--gold)] mb-4 sm:mb-6 animate-fade-in-up opacity-0"
             style={{ animationDelay: "0.15s", animationFillMode: "forwards" }}
           >
             ✨ +350 Eventos Exitosos
           </span>
 
           <h1
-            className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-[var(--foreground)] mb-6 sm:mb-8 leading-[1.1] animate-fade-in-up opacity-0"
+            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-[var(--foreground)] mb-6 sm:mb-8 leading-[1.1] animate-fade-in-up opacity-0"
             style={{ fontFamily: "var(--font-playfair)", animationDelay: "0.25s", animationFillMode: "forwards" }}
           >
             Meseros <span className="text-gradient">Profesionales</span>
@@ -321,7 +321,7 @@ function HeroSection() {
           </h1>
 
           <p
-            className="text-base sm:text-lg md:text-xl text-[var(--muted)] max-w-xl mb-8 sm:mb-10 leading-relaxed animate-fade-in-up opacity-0"
+            className="text-sm sm:text-base md:text-lg text-[var(--muted)] max-w-xl mb-8 sm:mb-10 leading-relaxed animate-fade-in-up opacity-0"
             style={{ animationDelay: "0.35s", animationFillMode: "forwards" }}
           >
             Personal capacitado, uniformado y con experiencia en protocolo.
@@ -346,7 +346,7 @@ function HeroSection() {
           </div>
 
           <p
-            className="mt-8 sm:mt-12 text-base sm:text-lg tracking-[0.12em] sm:tracking-[0.15em] uppercase text-[var(--muted)] animate-fade-in-up opacity-0"
+            className="mt-8 sm:mt-12 text-xs sm:text-sm tracking-[0.12em] sm:tracking-[0.15em] uppercase text-[var(--muted)] animate-fade-in-up opacity-0"
             style={{ animationDelay: "0.55s", animationFillMode: "forwards" }}
           >
             Disponibles fines de semana y días festivos
@@ -395,12 +395,12 @@ function BenefitsSection() {
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <h3
-                    className="text-xl text-[var(--foreground)] mb-2 group-hover:text-[var(--gold)] transition-colors duration-300"
+                    className="text-base text-[var(--foreground)] mb-2 group-hover:text-[var(--gold)] transition-colors duration-300"
                     style={{ fontFamily: "var(--font-playfair)" }}
                   >
                     {benefit.title}
                   </h3>
-                  <p className="text-base text-[var(--muted)] leading-relaxed">{benefit.description}</p>
+                  <p className="text-sm text-[var(--muted)] leading-relaxed">{benefit.description}</p>
                 </div>
               </Reveal>
             ))}
@@ -495,7 +495,7 @@ function ServicesSection() {
             >
               <div className="flex items-start sm:items-center justify-between gap-4 py-5 sm:py-6 md:py-8">
                 <h3
-                  className="text-lg sm:text-xl md:text-3xl text-[var(--foreground)] group-hover:text-[var(--gold)] transition-colors duration-300 pr-2"
+                  className="text-lg sm:text-xl md:text-2xl text-[var(--foreground)] group-hover:text-[var(--gold)] transition-colors duration-300 pr-2"
                   style={{ fontFamily: "var(--font-playfair)" }}
                 >
                   {service.title}
@@ -509,7 +509,7 @@ function ServicesSection() {
                 <div className="service-item-inner">
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-8 pb-5 sm:pb-6 md:pb-8">
                     <div className="md:col-span-7">
-                      <p className="text-base sm:text-lg text-[var(--muted)] leading-relaxed">{service.description}</p>
+                      <p className="text-sm sm:text-base text-[var(--muted)] leading-relaxed">{service.description}</p>
                     </div>
                     <div className="md:col-span-5 mt-2 md:mt-0">
                       <ul className="space-y-1.5">
@@ -659,9 +659,6 @@ function MixologistSection() {
         <source src="/7593094-uhd_4096_1974_30fps.mp4" type="video/mp4" />
       </video>
 
-      <div className="absolute inset-0 bg-black/55 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-black/40 to-black/30 pointer-events-none" />
-
       <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-10 py-20 sm:py-24 md:py-32 text-center hero-text-shadow pointer-events-auto">
         <Reveal from="up">
           <div className="flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 mb-6 md:mb-8">
@@ -669,14 +666,11 @@ function MixologistSection() {
             <span className="section-label">Servicio Premium</span>
           </div>
 
-          <h2
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[var(--foreground)] mb-6 leading-[1.1]"
-            style={{ fontFamily: "var(--font-playfair)" }}
-          >
+          <h2 className="section-title mb-6">
             Servicio de <span className="text-gradient">Mixólogo</span>
           </h2>
 
-          <p className="text-base sm:text-lg md:text-xl text-[var(--foreground)]/90 max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed">
+          <p className="section-description mb-8 sm:mb-10">
             Coctelería de autor y experiencias exclusivas para bodas, eventos corporativos y celebraciones
             que buscan un toque sofisticado y memorable.
           </p>
@@ -685,7 +679,7 @@ function MixologistSection() {
             {features.map((feature) => (
               <li
                 key={feature}
-                className="text-sm sm:text-base tracking-wide text-[var(--foreground)]/80 uppercase border border-[var(--border)] px-4 py-2 bg-black/30 backdrop-blur-sm"
+                className="text-xs sm:text-sm tracking-wide text-[var(--foreground)] uppercase border border-[var(--border)] px-4 py-2 bg-black/40 backdrop-blur-sm"
               >
                 {feature}
               </li>
@@ -697,7 +691,7 @@ function MixologistSection() {
               href={`https://wa.me/${CONTACT.whatsapp}?text=Hola,%20me%20interesa%20contratar%20el%20servicio%20de%20Mix%C3%B3logo%20para%20mi%20evento`}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary inline-flex items-center justify-center px-10 py-4 bg-[var(--gold)] text-[var(--background)] text-sm tracking-[0.15em] uppercase hover:bg-[var(--gold-light)] transition-colors duration-300"
+              className="btn-primary inline-flex items-center justify-center px-10 py-4 bg-[var(--gold)] text-[var(--background)] text-xs tracking-[0.15em] uppercase hover:bg-[var(--gold-light)] transition-colors duration-300"
             >
               Cotizar Mixólogo
             </a>
@@ -779,7 +773,7 @@ function PackagesSection() {
                 <span className="text-sm tracking-[0.2em] uppercase text-[var(--gold)] mb-6">Más Popular</span>
               )}
               <h3
-                className="text-3xl md:text-4xl text-[var(--foreground)] mb-1"
+                className="text-2xl md:text-3xl text-[var(--foreground)] mb-1"
                 style={{ fontFamily: "var(--font-playfair)" }}
               >
                 {pkg.name}
@@ -839,7 +833,7 @@ function StatsSection() {
               }`}
             >
               <div
-                className="text-3xl sm:text-4xl md:text-6xl text-[var(--foreground)] mb-1 sm:mb-2"
+                className="text-2xl sm:text-3xl md:text-5xl text-[var(--foreground)] mb-1 sm:mb-2"
                 style={{ fontFamily: "var(--font-playfair)" }}
               >
                 {stat.number}
@@ -1369,10 +1363,10 @@ function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-8 sm:gap-12 mb-12 sm:mb-16">
           <Reveal from="left" className="md:col-span-5 sm:col-span-2">
           <div>
-            <span className="text-xl sm:text-2xl text-[var(--foreground)]" style={{ fontFamily: "var(--font-playfair)" }}>
+            <span className="text-base sm:text-lg text-[var(--foreground)]" style={{ fontFamily: "var(--font-playfair)" }}>
               {CONTACT.name}
             </span>
-            <p className="text-[var(--muted)] mt-4 max-w-sm leading-relaxed text-base">
+            <p className="text-[var(--muted)] mt-4 max-w-sm leading-relaxed text-sm">
               Servicio profesional de meseros para todo tipo de eventos.
               Experiencia, puntualidad y excelencia en cada celebración.
             </p>
@@ -1397,7 +1391,7 @@ function Footer() {
           <Reveal from="left" delay={160} className="md:col-span-4">
           <div>
             <h4 className="text-sm tracking-[0.2em] uppercase text-[var(--muted)] mb-6">Contacto</h4>
-            <ul className="space-y-3 text-base text-[var(--muted)]">
+            <ul className="space-y-3 text-sm text-[var(--muted)]">
               <li>{CONTACT.name}</li>
               <li>{CONTACT.phone}</li>
               <li>Zona metropolitana de Guadalajara</li>
@@ -1408,10 +1402,10 @@ function Footer() {
 
         <Reveal from="up" delay={100}>
         <div className="pt-6 sm:pt-8 border-t border-[var(--border)] flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
-          <p className="text-base text-[var(--muted)] tracking-wide">
+          <p className="text-sm text-[var(--muted)] tracking-wide">
             © {new Date().getFullYear()} {CONTACT.name}. Todos los derechos reservados.
           </p>
-          <div className="flex flex-wrap justify-center gap-4 sm:gap-8 text-base">
+          <div className="flex flex-wrap justify-center gap-4 sm:gap-8 text-sm">
             <a href="#" className="nav-link hover:!text-[var(--foreground)]">
               Aviso de Privacidad
             </a>
