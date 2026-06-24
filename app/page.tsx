@@ -636,6 +636,81 @@ function AdditionalServicesSection() {
   );
 }
 
+function MixologistSection() {
+  const features = [
+    "Cocteles de autor y creaciones exclusivas",
+    "Menús personalizados para tu evento",
+    "Ingredientes premium y presentación impecable",
+    "Show de mixología en vivo",
+  ];
+
+  return (
+    <section
+      id="mixologo"
+      className="relative min-h-[75dvh] md:min-h-[85vh] flex items-center justify-center overflow-hidden pointer-events-none"
+    >
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+      >
+        <source src="/7593094-uhd_4096_1974_30fps.mp4" type="video/mp4" />
+      </video>
+
+      <div className="absolute inset-0 bg-black/55 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-black/40 to-black/30 pointer-events-none" />
+
+      <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-10 py-20 sm:py-24 md:py-32 text-center hero-text-shadow pointer-events-auto">
+        <Reveal from="up">
+          <div className="flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 mb-6 md:mb-8">
+            <span className="section-number">04{"//"}</span>
+            <span className="section-label">Servicio Premium</span>
+          </div>
+
+          <h2
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[var(--foreground)] mb-6 leading-[1.1]"
+            style={{ fontFamily: "var(--font-playfair)" }}
+          >
+            Servicio de <span className="text-gradient">Mixólogo</span>
+          </h2>
+
+          <p className="text-base sm:text-lg md:text-xl text-[var(--foreground)]/90 max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed">
+            Coctelería de autor y experiencias exclusivas para bodas, eventos corporativos y celebraciones
+            que buscan un toque sofisticado y memorable.
+          </p>
+
+          <ul className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4 mb-10 sm:mb-12">
+            {features.map((feature) => (
+              <li
+                key={feature}
+                className="text-sm sm:text-base tracking-wide text-[var(--foreground)]/80 uppercase border border-[var(--border)] px-4 py-2 bg-black/30 backdrop-blur-sm"
+              >
+                {feature}
+              </li>
+            ))}
+          </ul>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+            <a
+              href={`https://wa.me/${CONTACT.whatsapp}?text=Hola,%20me%20interesa%20contratar%20el%20servicio%20de%20Mix%C3%B3logo%20para%20mi%20evento`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary inline-flex items-center justify-center px-10 py-4 bg-[var(--gold)] text-[var(--background)] text-sm tracking-[0.15em] uppercase hover:bg-[var(--gold-light)] transition-colors duration-300"
+            >
+              Cotizar Mixólogo
+            </a>
+            <a href="#servicios-adicionales" className="text-link text-[var(--foreground)]">
+              Ver más servicios
+            </a>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
 function PackagesSection() {
   const packages = [
     {
@@ -681,7 +756,7 @@ function PackagesSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <Reveal from="right">
           <SectionHeader
-            number="04"
+            number="05"
             label="Paquetes"
             title={
               <>
@@ -812,7 +887,7 @@ function TestimonialsSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <Reveal from="left">
           <SectionHeader
-            number="05"
+            number="06"
             label="Testimonios"
             title={
               <>
@@ -895,7 +970,7 @@ function GallerySection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <Reveal from="right">
           <SectionHeader
-            number="06"
+            number="07"
             label="Galería"
             title={
               <>
@@ -999,7 +1074,7 @@ function ProcessSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <Reveal from="right">
           <SectionHeader
-            number="07"
+            number="08"
             label="Proceso"
             title={
               <>
@@ -1053,7 +1128,7 @@ function FAQSection() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-10">
         <Reveal from="up">
           <SectionHeader
-            number="08"
+            number="09"
             label="FAQ"
             title={
               <>
@@ -1134,7 +1209,7 @@ function ContactSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <Reveal from="left">
           <SectionHeader
-            number="09"
+            number="10"
             label="Contacto"
             title={
               <>
@@ -1281,6 +1356,7 @@ function Footer() {
   const footerLinks = [
     { label: "Servicios", href: "#servicios" },
     { label: "Servicios Adicionales", href: "#servicios-adicionales" },
+    { label: "Mixólogo", href: "#mixologo" },
     { label: "Paquetes", href: "#paquetes" },
     { label: "Testimonios", href: "#testimonios" },
     { label: "Proceso", href: "#proceso" },
@@ -1376,6 +1452,7 @@ export default function Home() {
         <BenefitsSection />
         <ServicesSection />
         <AdditionalServicesSection />
+        <MixologistSection />
         <PackagesSection />
         <StatsSection />
         <TestimonialsSection />
