@@ -81,7 +81,7 @@ function SectionHeader({
   label,
   title,
   description,
-  align = "left",
+  align = "center",
 }: {
   number: string;
   label: string;
@@ -95,7 +95,7 @@ function SectionHeader({
         <span className="section-number">{number}{"//"}</span>
         <span className="section-label">{label}</span>
       </div>
-      <h2 className="section-title mb-6">{title}</h2>
+      <h2 className={`section-title mb-6 ${align === "center" ? "mx-auto" : ""}`}>{title}</h2>
       {description && (
         <p className={`section-description ${align === "center" ? "mx-auto" : ""}`}>{description}</p>
       )}
@@ -189,7 +189,7 @@ function Navbar() {
         <div
           id="mobile-menu"
           className="md:hidden fixed inset-0 z-[9998] bg-[var(--background)]"
-          style={{ paddingTop: "calc(3.75rem + env(safe-area-inset-top, 0px))" }}
+          style={{ paddingTop: "calc(4.5rem + env(safe-area-inset-top, 0px))" }}
         >
           <div className="h-full overflow-y-auto overscroll-contain">
             <div className="flex flex-col gap-2 px-4 sm:px-6 py-6 pb-24">
@@ -238,18 +238,35 @@ function Navbar() {
           transform: "translate3d(0, 0, 0)",
         }}
       >
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
-          <div className="flex items-center justify-between gap-3 min-h-11">
-            <a href="#" className="group min-w-0 max-w-[calc(100%-3.5rem)] md:max-w-none">
+        <nav className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+          <button
+            type="button"
+            className="md:hidden absolute right-0 top-1/2 -translate-y-1/2 z-[1] text-[var(--foreground)] w-11 h-11 flex items-center justify-center flex-shrink-0 touch-manipulation cursor-pointer bg-transparent border-0 p-0"
+            onClick={toggleMobileMenu}
+            aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-menu"
+          >
+            <svg className="w-6 h-6 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              {isMobileMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 7h16M4 12h16M4 17h16" />
+              )}
+            </svg>
+          </button>
+
+          <div className="flex flex-col items-center text-center min-h-11 md:min-h-0">
+            <a href="#" className="group inline-block max-w-full px-12 md:px-0">
               <span
-                className="block text-base sm:text-lg md:text-xl tracking-wide text-[var(--foreground)] group-hover:text-[var(--gold)] transition-colors duration-300 truncate"
+                className="block text-2xl sm:text-3xl md:text-4xl tracking-wide text-[var(--foreground)] group-hover:text-[var(--gold)] transition-colors duration-300"
                 style={{ fontFamily: "var(--font-playfair)" }}
               >
                 {CONTACT.name}
               </span>
             </a>
 
-            <div className="hidden md:flex items-center gap-10">
+            <div className="hidden md:flex items-center justify-center flex-wrap gap-x-8 lg:gap-x-10 gap-y-3 mt-4 md:mt-5">
               {navLinks.map((link) => (
                 <a key={link.href} href={link.href} className="nav-link">
                   {link.label}
@@ -264,23 +281,6 @@ function Navbar() {
                 Cotizar Ahora
               </a>
             </div>
-
-            <button
-              type="button"
-              className="md:hidden relative z-[1] text-[var(--foreground)] w-11 h-11 flex items-center justify-center flex-shrink-0 touch-manipulation cursor-pointer bg-transparent border-0 p-0"
-              onClick={toggleMobileMenu}
-              aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
-              aria-expanded={isMobileMenuOpen}
-              aria-controls="mobile-menu"
-            >
-              <svg className="w-6 h-6 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                {isMobileMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 7h16M4 12h16M4 17h16" />
-                )}
-              </svg>
-            </button>
           </div>
         </nav>
       </header>
@@ -382,7 +382,9 @@ function BenefitsSection() {
               }
               description="Nos comprometemos a brindar un servicio excepcional que supere tus expectativas"
             />
-            <TextLink href="#galeria">Ver galería</TextLink>
+            <div className="flex justify-center">
+              <TextLink href="#galeria">Ver galería</TextLink>
+            </div>
           </Reveal>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-10">
@@ -526,7 +528,7 @@ function ServicesSection() {
           ))}
         </div>
 
-        <Reveal from="up" delay={200} className="mt-16 pt-8 border-t border-[var(--border)]">
+        <Reveal from="up" delay={200} className="mt-16 pt-8 border-t border-[var(--border)] flex justify-center">
           <TextLink href="#paquetes">Explorar paquetes</TextLink>
         </Reveal>
       </div>
@@ -1059,7 +1061,6 @@ function FAQSection() {
               </>
             }
             description="Resolvemos tus dudas más comunes"
-            align="center"
           />
         </Reveal>
 
