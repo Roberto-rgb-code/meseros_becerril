@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, ReactNode } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { CONTACT } from "./constants";
 
@@ -127,26 +128,53 @@ function TextLink({
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  const scrollPositionRef = useRef(0);
+  const isNavigatingRef = useRef(false);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    setIsMounted(true);
   }, []);
 
   useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-      document.documentElement.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-      document.documentElement.style.overflow = "";
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const unlockBodyScroll = (restoreScroll = true) => {
+    const scrollY = scrollPositionRef.current;
+    document.body.style.position = "";
+    document.body.style.top = "";
+    document.body.style.left = "";
+    document.body.style.right = "";
+    document.body.style.width = "";
+    document.body.style.overflow = "";
+    if (restoreScroll) {
+      window.scrollTo(0, scrollY);
     }
+  };
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+
+    scrollPositionRef.current = window.scrollY;
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollPositionRef.current}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+    document.body.style.width = "100%";
+    document.body.style.overflow = "hidden";
+
     return () => {
-      document.body.style.overflow = "";
-      document.documentElement.style.overflow = "";
+      unlockBodyScroll(!isNavigatingRef.current);
+      isNavigatingRef.current = false;
     };
   }, [isMobileMenuOpen]);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen((open) => !open);
+  };
 
   const navLinks = [
     { href: "#servicios", label: "Servicios" },
@@ -156,105 +184,121 @@ function Navbar() {
     { href: "#contacto", label: "Contacto" },
   ];
 
-  return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${
-        isScrolled || isMobileMenuOpen ? "glass py-3 md:py-4" : "bg-transparent py-4 md:py-8 max-md:bg-[rgba(10,10,10,0.72)] max-md:backdrop-blur-md max-md:py-3"
-      }`}
-      style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
-    >
-      <div className="relative z-[102] max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
-        <div className="flex items-center justify-between gap-4">
-          <a href="#" className="group min-w-0 flex-1 md:flex-none">
-            <span
-              className="block text-base sm:text-lg md:text-xl tracking-wide text-[var(--foreground)] group-hover:text-[var(--gold)] transition-colors duration-300 truncate"
-              style={{ fontFamily: "var(--font-playfair)" }}
-            >
-              {CONTACT.name}
-            </span>
-          </a>
-
-          <div className="hidden md:flex items-center gap-10">
-            {navLinks.map((link) => (
-              <a key={link.href} href={link.href} className="nav-link">
-                {link.label}
-              </a>
-            ))}
-            <a
-              href={`https://wa.me/${CONTACT.whatsapp}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-link !text-[var(--gold)]"
-            >
-              Cotizar Ahora
-            </a>
-          </div>
-
-          <button
-            type="button"
-            className="md:hidden relative z-[103] text-[var(--foreground)] min-w-11 min-h-11 flex items-center justify-center -mr-2 flex-shrink-0 touch-manipulation cursor-pointer"
-            onClick={() => setIsMobileMenuOpen((open) => !open)}
-            aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
-            aria-expanded={isMobileMenuOpen}
-            aria-controls="mobile-menu"
-          >
-            <svg className="w-6 h-6 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              {isMobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 7h16M4 12h16M4 17h16" />
-              )}
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      {isMobileMenuOpen && (
+  const mobileMenu = isMobileMenuOpen && isMounted
+    ? createPortal(
         <div
           id="mobile-menu"
-          className="md:hidden fixed left-0 right-0 bottom-0 z-[101] bg-[var(--background)] overflow-y-auto overscroll-contain"
-          style={{ top: "calc(3.5rem + env(safe-area-inset-top, 0px))" }}
+          className="md:hidden fixed inset-0 z-[9998] bg-[var(--background)]"
+          style={{ paddingTop: "calc(3.75rem + env(safe-area-inset-top, 0px))" }}
         >
-          <div className="flex flex-col gap-6 px-4 sm:px-6 py-8 pb-24">
-            {navLinks.map((link) => (
+          <div className="h-full overflow-y-auto overscroll-contain">
+            <div className="flex flex-col gap-2 px-4 sm:px-6 py-6 pb-24">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="nav-link text-base py-4 border-b border-[var(--border)]"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    isNavigatingRef.current = true;
+                    unlockBodyScroll(false);
+                    scrollToAnchor(link.href, () => setIsMobileMenuOpen(false));
+                  }}
+                >
+                  {link.label}
+                </a>
+              ))}
               <a
-                key={link.href}
-                href={link.href}
-                className="nav-link text-base py-3 border-b border-[var(--border)]"
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToAnchor(link.href, () => setIsMobileMenuOpen(false));
-                }}
+                href={`https://wa.me/${CONTACT.whatsapp}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-link !text-[var(--gold)] text-base mt-4 py-2"
+                onClick={() => setIsMobileMenuOpen(false)}
               >
-                {link.label}
+                Cotizar Ahora
               </a>
-            ))}
-            <a
-              href={`https://wa.me/${CONTACT.whatsapp}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-link !text-[var(--gold)] text-base mt-4"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Cotizar Ahora
-            </a>
+            </div>
           </div>
-        </div>
-      )}
-    </nav>
+        </div>,
+        document.body
+      )
+    : null;
+
+  return (
+    <>
+      <header
+        className={`site-header fixed top-0 left-0 right-0 z-[9999] transition-all duration-500 max-md:bg-[var(--background)] max-md:py-3 ${
+          isScrolled || isMobileMenuOpen
+            ? "md:glass md:py-3 lg:py-4 max-md:border-b max-md:border-[var(--border)]"
+            : "md:bg-transparent md:py-4 lg:py-8"
+        }`}
+        style={{
+          paddingTop: "env(safe-area-inset-top, 0px)",
+          WebkitTransform: "translate3d(0, 0, 0)",
+          transform: "translate3d(0, 0, 0)",
+        }}
+      >
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+          <div className="flex items-center justify-between gap-3 min-h-11">
+            <a href="#" className="group min-w-0 max-w-[calc(100%-3.5rem)] md:max-w-none">
+              <span
+                className="block text-base sm:text-lg md:text-xl tracking-wide text-[var(--foreground)] group-hover:text-[var(--gold)] transition-colors duration-300 truncate"
+                style={{ fontFamily: "var(--font-playfair)" }}
+              >
+                {CONTACT.name}
+              </span>
+            </a>
+
+            <div className="hidden md:flex items-center gap-10">
+              {navLinks.map((link) => (
+                <a key={link.href} href={link.href} className="nav-link">
+                  {link.label}
+                </a>
+              ))}
+              <a
+                href={`https://wa.me/${CONTACT.whatsapp}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-link !text-[var(--gold)]"
+              >
+                Cotizar Ahora
+              </a>
+            </div>
+
+            <button
+              type="button"
+              className="md:hidden relative z-[1] text-[var(--foreground)] w-11 h-11 flex items-center justify-center flex-shrink-0 touch-manipulation cursor-pointer bg-transparent border-0 p-0"
+              onClick={toggleMobileMenu}
+              aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-menu"
+            >
+              <svg className="w-6 h-6 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                {isMobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 7h16M4 12h16M4 17h16" />
+                )}
+              </svg>
+            </button>
+          </div>
+        </nav>
+      </header>
+      {mobileMenu}
+    </>
   );
 }
 
 function HeroSection() {
   return (
-    <section className="relative min-h-[100dvh] flex flex-col justify-end overflow-hidden">
+    <section className="relative min-h-[100dvh] flex flex-col justify-end overflow-hidden pointer-events-none">
       <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover pointer-events-none">
         <source src="/5032272-hd_1920_1080_25fps.mp4" type="video/mp4" />
       </video>
 
       <div className="absolute inset-0 hero-mobile-overlay md:hidden pointer-events-none" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 w-full pb-12 sm:pb-16 md:pb-24 pt-24 sm:pt-32 hero-text-shadow md:[text-shadow:none]">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 w-full pb-12 sm:pb-16 md:pb-24 pt-24 sm:pt-32 hero-text-shadow md:[text-shadow:none] pointer-events-auto">
         <p className="text-[10px] sm:text-xs md:text-sm tracking-[0.15em] sm:tracking-[0.2em] uppercase text-[var(--muted)] mb-6 sm:mb-8 animate-fade-in-up">
           Servicio profesional de meseros en la zona metropolitana de Guadalajara
         </p>
@@ -1324,21 +1368,23 @@ function WhatsAppButton() {
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[var(--background)] overflow-x-hidden">
+    <>
       <Navbar />
-      <HeroSection />
-      <BenefitsSection />
-      <ServicesSection />
-      <AdditionalServicesSection />
-      <PackagesSection />
-      <StatsSection />
-      <TestimonialsSection />
-      <GallerySection />
-      <ProcessSection />
-      <FAQSection />
-      <ContactSection />
-      <Footer />
+      <main className="min-h-screen bg-[var(--background)]">
+        <HeroSection />
+        <BenefitsSection />
+        <ServicesSection />
+        <AdditionalServicesSection />
+        <PackagesSection />
+        <StatsSection />
+        <TestimonialsSection />
+        <GallerySection />
+        <ProcessSection />
+        <FAQSection />
+        <ContactSection />
+        <Footer />
+      </main>
       <WhatsAppButton />
-    </main>
+    </>
   );
 }
