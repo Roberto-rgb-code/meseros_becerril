@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, ReactNode } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { CONTACT } from "./constants";
+import { MEDIA } from "./media";
 
 type RevealDirection = "left" | "right" | "up";
 
@@ -122,6 +123,38 @@ function TextLink({
       {children}
       <span className="transition-transform group-hover:translate-x-1">→</span>
     </a>
+  );
+}
+
+function SectionVideoBanner({
+  src,
+  className = "min-h-[38vh] sm:min-h-[44vh]",
+}: {
+  src: string;
+  className?: string;
+}) {
+  return (
+    <div className={`relative overflow-hidden pointer-events-none ${className}`}>
+      <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover pointer-events-none">
+        <source src={src} type="video/mp4" />
+      </video>
+    </div>
+  );
+}
+
+function SectionPhoto({
+  src,
+  alt,
+  className = "aspect-[4/3]",
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+}) {
+  return (
+    <div className={`relative overflow-hidden border border-[var(--border)] ${className}`}>
+      <img src={src} alt={alt} className="w-full h-full object-cover" loading="lazy" />
+    </div>
   );
 }
 
@@ -370,19 +403,31 @@ function BenefitsSection() {
   return (
     <section className="section-padding border-t border-[var(--border)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 lg:gap-24 items-start">
-          <Reveal from="left">
-            <SectionHeader
-              number="01"
-              label="¿Por qué elegirnos?"
-              title={
-                <>
-                  Beneficios que nos <span className="text-gradient">Distinguen</span>
-                </>
-              }
-              description="Nos comprometemos a brindar un servicio excepcional que supere tus expectativas"
+        <Reveal from="up">
+          <SectionHeader
+            number="01"
+            label="¿Por qué elegirnos?"
+            title={
+              <>
+                Beneficios que nos <span className="text-gradient">Distinguen</span>
+              </>
+            }
+            description="Nos comprometemos a brindar un servicio excepcional que supere tus expectativas"
+          />
+        </Reveal>
+
+        <Reveal from="up" delay={80} className="my-10 md:my-14">
+          <SectionVideoBanner src={MEDIA.benefits.video} />
+        </Reveal>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 lg:gap-20 items-start">
+          <Reveal from="left" delay={100}>
+            <SectionPhoto
+              src={MEDIA.benefits.featured}
+              alt="Mesero profesional sirviendo en evento elegante"
+              className="aspect-[4/5] sm:aspect-[3/4]"
             />
-            <div className="flex justify-center">
+            <div className="flex justify-center mt-8">
               <TextLink href="#galeria">Ver galería</TextLink>
             </div>
           </Reveal>
@@ -423,41 +468,49 @@ function ServicesSection() {
       title: "Meseros para Eventos Privados",
       description: "Servicio personalizado para fiestas, reuniones y celebraciones íntimas con atención de primera.",
       features: ["Servicio de mesa", "Atención a invitados", "Montaje básico"],
+      image: MEDIA.services.items["Meseros para Eventos Privados"],
     },
     {
       title: "Staff para Bodas y XV Años",
       description: "Equipo especializado en eventos sociales con protocolo y elegancia para tu día especial.",
       features: ["Coordinación con organizadores", "Servicio de banquete", "Atención VIP"],
+      image: MEDIA.services.items["Staff para Bodas y XV Años"],
     },
     {
       title: "Eventos Corporativos",
       description: "Profesionalismo y discreción para conferencias, cenas ejecutivas y eventos empresariales.",
       features: ["Imagen corporativa", "Coffee breaks", "Cenas de gala"],
+      image: MEDIA.services.items["Eventos Corporativos"],
     },
     {
       title: "Capitanes de Meseros",
       description: "Supervisión experta para coordinar equipos grandes y garantizar un servicio impecable.",
       features: ["Coordinación de equipo", "Control de tiempos", "Resolución de imprevistos"],
+      image: MEDIA.services.items["Capitanes de Meseros"],
     },
     {
       title: "Montaje y Desmontaje",
       description: "Preparación completa del espacio antes y después de tu evento con profesionalismo.",
       features: ["Montaje de mesas", "Decoración básica", "Limpieza post-evento"],
+      image: MEDIA.services.items["Montaje y Desmontaje"],
     },
     {
       title: "Servicio de Coctelería",
       description: "Bartenders profesionales para barra de bebidas con show y preparaciones especiales.",
       features: ["Coctelería clásica", "Bebidas personalizadas", "Show de barman"],
+      image: MEDIA.services.items["Servicio de Coctelería"],
     },
     {
       title: "Hostess y Recepción",
       description: "Personal de recepción para dar la bienvenida y guiar a tus invitados con elegancia.",
       features: ["Registro de invitados", "Orientación", "Imagen impecable"],
+      image: MEDIA.services.items["Hostess y Recepción"],
     },
     {
       title: "Servicio a Domicilio",
       description: "Llevamos el servicio profesional hasta tu hogar para cenas y celebraciones privadas.",
       features: ["Eventos en casa", "Cenas íntimas", "Celebraciones familiares"],
+      image: MEDIA.services.items["Servicio a Domicilio"],
     },
   ];
 
@@ -475,6 +528,10 @@ function ServicesSection() {
             }
             description="Servicios adaptados a las necesidades de tu evento"
           />
+        </Reveal>
+
+        <Reveal from="up" delay={80} className="mb-10 md:mb-14">
+          <SectionVideoBanner src={MEDIA.services.bannerVideo} className="min-h-[32vh] sm:min-h-[40vh]" />
         </Reveal>
 
         <div className="mt-4">
@@ -507,11 +564,16 @@ function ServicesSection() {
 
               <div className="service-item-content">
                 <div className="service-item-inner">
-                  <div className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-8 pb-5 sm:pb-6 md:pb-8">
-                    <div className="md:col-span-7">
-                      <p className="text-sm sm:text-base text-[var(--muted)] leading-relaxed">{service.description}</p>
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 pb-5 sm:pb-6 md:pb-8">
+                    <div className="md:col-span-5">
+                      <SectionPhoto
+                        src={service.image}
+                        alt={service.title}
+                        className="aspect-[4/3] md:aspect-[3/4]"
+                      />
                     </div>
-                    <div className="md:col-span-5 mt-2 md:mt-0">
+                    <div className="md:col-span-7">
+                      <p className="text-sm sm:text-base text-[var(--muted)] leading-relaxed mb-4">{service.description}</p>
                       <ul className="space-y-1.5">
                         {service.features.map((feature, idx) => (
                           <li key={idx} className="text-sm sm:text-sm tracking-wide text-[var(--muted)] uppercase">
@@ -543,8 +605,7 @@ function AdditionalServicesSection() {
       description:
         "Experto en parrilla para tus eventos al aire libre. Preparación de carnes, cortes especiales y servicio en vivo frente a tus invitados.",
       features: ["Parrilla en vivo", "Carnes y cortes premium", "Atención en jardín o terraza"],
-      image:
-        "https://images.pexels.com/photos/2338407/pexels-photo-2338407.jpeg?auto=compress&cs=tinysrgb&w=800",
+      image: MEDIA.additionalServices.Parrillero,
       alt: "Parrillero preparando carne en evento",
     },
     {
@@ -552,8 +613,7 @@ function AdditionalServicesSection() {
       description:
         "Servicio profesional de barra con bebidas clásicas y de autor. Atención ágil, presentación impecable y ambiente sofisticado para tu evento.",
       features: ["Barra completa", "Bebidas clásicas y especiales", "Servicio dinámico"],
-      image:
-        "https://images.pexels.com/photos/2747448/pexels-photo-2747448.jpeg?auto=compress&cs=tinysrgb&w=800",
+      image: MEDIA.additionalServices.Bartender,
       alt: "Bartender sirviendo bebidas en evento",
     },
     {
@@ -561,8 +621,7 @@ function AdditionalServicesSection() {
       description:
         "Coctelería de autor y creaciones exclusivas para ocasiones especiales. Menús personalizados, ingredientes premium y show de mixología.",
       features: ["Cocteles de autor", "Menú personalizado", "Experiencia premium"],
-      image:
-        "https://images.pexels.com/photos/1283219/pexels-photo-1283219.jpeg?auto=compress&cs=tinysrgb&w=800",
+      image: MEDIA.additionalServices.Mixólogo,
       alt: "Mixólogo preparando cocteles",
     },
   ];
@@ -581,6 +640,10 @@ function AdditionalServicesSection() {
             }
             description="Personal capacitado para complementar tu celebración con servicios premium"
           />
+        </Reveal>
+
+        <Reveal from="up" delay={60} className="my-10 md:my-14">
+          <SectionVideoBanner src={MEDIA.additionalServices.bannerVideo} className="min-h-[28vh] sm:min-h-[36vh]" />
         </Reveal>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
@@ -764,10 +827,16 @@ function PackagesSection() {
           {packages.map((pkg, index) => (
             <Reveal key={index} from={index === 0 ? "left" : index === 1 ? "up" : "right"} delay={index * 100}>
               <div
-                className={`card-minimal p-6 sm:p-8 md:p-10 flex flex-col h-full ${
+                className={`card-minimal overflow-hidden flex flex-col h-full ${
                 pkg.popular ? "border-[var(--gold)]/40 bg-[var(--charcoal)] md:order-none order-first" : ""
               }`}
             >
+              <SectionPhoto
+                src={MEDIA.packages[pkg.name as keyof typeof MEDIA.packages]}
+                alt={`Paquete ${pkg.name} — ${pkg.subtitle}`}
+                className="aspect-[16/10] border-0 border-b border-[var(--border)]"
+              />
+              <div className="p-6 sm:p-8 md:p-10 flex flex-col flex-grow">
               {pkg.popular && (
                 <span className="text-sm tracking-[0.2em] uppercase text-[var(--gold)] mb-6">Más Popular</span>
               )}
@@ -802,6 +871,7 @@ function PackagesSection() {
                 Solicitar Cotización
               </a>
               </div>
+              </div>
             </Reveal>
           ))}
         </div>
@@ -819,8 +889,17 @@ function StatsSection() {
   ];
 
   return (
-    <section className="border-y border-[var(--border)]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+    <section className="relative border-y border-[var(--border)] overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        <img
+          src={MEDIA.stats.background}
+          alt="Servicio de catering en evento"
+          className="w-full h-full object-cover opacity-25"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-[var(--background)]/80" />
+      </div>
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <div className="grid grid-cols-2 md:grid-cols-4 py-8 sm:py-12 md:py-16 gap-y-6">
           {stats.map((stat, index) => (
             <Reveal key={index} from={index < 2 ? "left" : "right"} delay={index * 80}>
@@ -852,24 +931,28 @@ function TestimonialsSection() {
     {
       name: "María García",
       event: "Boda",
+      image: MEDIA.testimonials.Boda,
       text: "Excelente servicio, el equipo fue muy profesional y atento. Todos mis invitados quedaron encantados con la atención. Sin duda los recomiendo para cualquier evento.",
       rating: 5,
     },
     {
       name: "Carlos Rodríguez",
       event: "Evento Corporativo",
+      image: MEDIA.testimonials["Evento Corporativo"],
       text: "Contratamos sus servicios para nuestra cena de fin de año y superaron nuestras expectativas. Puntuales, profesionales y muy atentos a cada detalle.",
       rating: 5,
     },
     {
       name: "Ana Martínez",
       event: "XV Años",
+      image: MEDIA.testimonials["XV Años"],
       text: "Los meseros fueron increíbles, muy atentos y profesionales. Hicieron que la fiesta de mi hija fuera perfecta. El capitán coordinó todo a la perfección.",
       rating: 5,
     },
     {
       name: "Roberto Sánchez",
       event: "Bautizo",
+      image: MEDIA.testimonials.Bautizo,
       text: "Servicio de primera calidad. El montaje quedó hermoso y el equipo fue muy amable con todos nuestros invitados. Definitivamente volveremos a contratarlos.",
       rating: 5,
     },
@@ -894,7 +977,13 @@ function TestimonialsSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
           {testimonials.map((testimonial, index) => (
             <Reveal key={index} from={sideFromIndex(index)} delay={index * 100}>
-              <article className="card-minimal p-6 sm:p-8 md:p-10 h-full">
+              <article className="card-minimal overflow-hidden h-full flex flex-col">
+              <SectionPhoto
+                src={testimonial.image}
+                alt={`Evento de ${testimonial.event} — testimonio de ${testimonial.name}`}
+                className="aspect-[16/10] border-0 border-b border-[var(--border)]"
+              />
+              <div className="p-6 sm:p-8 md:p-10 flex flex-col flex-grow">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 sm:mb-8">
                 <div>
                   <h4 className="text-[var(--foreground)] font-medium text-base sm:text-lg">{testimonial.name}</h4>
@@ -906,7 +995,8 @@ function TestimonialsSection() {
                   ))}
                 </div>
               </div>
-              <p className="text-base sm:text-lg text-[var(--muted)] leading-[1.85] italic">&ldquo;{testimonial.text}&rdquo;</p>
+              <p className="text-base sm:text-lg text-[var(--muted)] leading-[1.85] italic flex-grow">&ldquo;{testimonial.text}&rdquo;</p>
+              </div>
               </article>
             </Reveal>
           ))}
@@ -935,14 +1025,7 @@ function GallerySection() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
-  const images = [
-    { src: "https://images.pexels.com/photos/3171837/pexels-photo-3171837.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750", alt: "Celebración elegante", category: "Eventos" },
-    { src: "https://images.pexels.com/photos/2788792/pexels-photo-2788792.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750", alt: "Boda elegante", category: "Bodas" },
-    { src: "https://images.pexels.com/photos/1579739/pexels-photo-1579739.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750", alt: "Servicio de catering profesional", category: "Catering" },
-    { src: "https://images.pexels.com/photos/3184183/pexels-photo-3184183.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750", alt: "Evento corporativo exitoso", category: "Corporativo" },
-    { src: "https://images.pexels.com/photos/1045541/pexels-photo-1045541.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750", alt: "Mesa elegante preparada", category: "Montajes" },
-    { src: "https://images.pexels.com/photos/696218/pexels-photo-696218.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750", alt: "Servicio de bar profesional", category: "Coctelería" },
-  ];
+  const images = MEDIA.gallery.map((item) => ({ ...item }));
 
   useEffect(() => {
     if (!isAutoPlaying) return;
@@ -1056,10 +1139,10 @@ function GallerySection() {
 
 function ProcessSection() {
   const steps = [
-    { number: "01", title: "Solicita Cotización", description: "Contáctanos por WhatsApp o formulario con los detalles de tu evento" },
-    { number: "02", title: "Confirmamos Disponibilidad", description: "Verificamos fecha, horario y asignamos el equipo ideal para tu evento" },
-    { number: "03", title: "Realiza tu Anticipo", description: "Asegura tu fecha con un anticipo y confirma todos los detalles" },
-    { number: "04", title: "¡Disfruta tu Evento!", description: "Nuestro equipo llega puntual y se encarga de todo el servicio" },
+    { number: "01", title: "Solicita Cotización", description: "Contáctanos por WhatsApp o formulario con los detalles de tu evento", image: MEDIA.process["Solicita Cotización"] },
+    { number: "02", title: "Confirmamos Disponibilidad", description: "Verificamos fecha, horario y asignamos el equipo ideal para tu evento", image: MEDIA.process["Confirmamos Disponibilidad"] },
+    { number: "03", title: "Realiza tu Anticipo", description: "Asegura tu fecha con un anticipo y confirma todos los detalles", image: MEDIA.process["Realiza tu Anticipo"] },
+    { number: "04", title: "¡Disfruta tu Evento!", description: "Nuestro equipo llega puntual y se encarga de todo el servicio", image: MEDIA.process["¡Disfruta tu Evento!"] },
   ];
 
   return (
@@ -1081,7 +1164,12 @@ function ProcessSection() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-12">
           {steps.map((step, index) => (
             <Reveal key={index} from={index % 2 === 0 ? "left" : "right"} delay={index * 100}>
-              <div className="group border-t border-[var(--border)] pt-6 sm:border-0 sm:pt-0 h-full">
+              <div className="group h-full">
+                <SectionPhoto
+                  src={step.image}
+                  alt={step.title}
+                  className="aspect-[4/3] mb-5 sm:mb-6"
+                />
                 <span className="section-number block mb-4 sm:mb-6">{step.number}{"//"}</span>
                 <h3
                   className="text-lg sm:text-xl text-[var(--foreground)] mb-3 sm:mb-4 group-hover:text-[var(--gold)] transition-colors duration-300"
@@ -1118,7 +1206,7 @@ function FAQSection() {
 
   return (
     <section className="section-padding">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         <Reveal from="up">
           <SectionHeader
             number="09"
@@ -1132,7 +1220,16 @@ function FAQSection() {
           />
         </Reveal>
 
-        <div className="border-t border-[var(--border)]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+          <Reveal from="left" delay={80} className="lg:col-span-5 hidden lg:block">
+            <SectionPhoto
+              src={MEDIA.faq.side}
+              alt="Mesero profesional en servicio de evento"
+              className="aspect-[3/4] sticky top-28"
+            />
+          </Reveal>
+
+          <div className="lg:col-span-7 border-t border-[var(--border)]">
           {faqs.map((faq, index) => (
             <Reveal key={index} from={sideFromIndex(index)} delay={index * 50}>
               <div
@@ -1166,6 +1263,7 @@ function FAQSection() {
             </div>
             </Reveal>
           ))}
+          </div>
         </div>
       </div>
     </section>
@@ -1213,9 +1311,18 @@ function ContactSection() {
           />
         </Reveal>
 
+        <Reveal from="up" delay={80} className="mb-10 md:mb-14">
+          <SectionVideoBanner src={MEDIA.contact.video} className="min-h-[28vh] sm:min-h-[34vh]" />
+        </Reveal>
+
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-20">
           <Reveal from="left" delay={100} className="lg:col-span-5">
             <div className="space-y-8 sm:space-y-12">
+            <SectionPhoto
+              src={MEDIA.contact.side}
+              alt="Celebración con servicio profesional de meseros"
+              className="aspect-[4/3]"
+            />
             <div>
               <h3 className="text-sm tracking-[0.2em] uppercase text-[var(--muted)] mb-4 sm:mb-6">Visítanos</h3>
               <p className="text-xl sm:text-2xl text-[var(--foreground)] mb-3 sm:mb-4" style={{ fontFamily: "var(--font-playfair)" }}>
